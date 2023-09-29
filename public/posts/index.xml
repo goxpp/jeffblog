@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Jeff&#39;s Blog</title>
+    <link>https://mynewhugosite.com/posts/</link>
+    <description>Recent content in Posts on Jeff&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 26 Sep 2023 18:21:43 +0800</lastBuildDate><atom:link href="https://mynewhugosite.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>修改Mac终端的前缀</title>
+      <link>https://mynewhugosite.com/posts/modify-prefix-macterminal/</link>
+      <pubDate>Tue, 26 Sep 2023 18:21:43 +0800</pubDate>
+      
+      <guid>https://mynewhugosite.com/posts/modify-prefix-macterminal/</guid>
+      <description>进入终端时前缀太长了😤
+jeff jeffzhangdeMacBook-Pro ~ % 想要修改并保留有用信息⬇️
+jeff ~ &amp;gt; 1. 修改文件权限 根据自己系统选择 其中一个 命令执行
+ macOS Catalina之后（包含）【大多数选择】
+sudo chmod -R 777 /etc/zshrc  macOS Catalina之前（不包含）注：如旧系统 以下修改配置不适用
+sudo chmod -R 777 /etc/bashrc 输入当前用户的密码，权限修改完成
+2. 修改配置 以/etc/zshrc为例
+vi /etc/zshrc 输入后会显示如下
+· 各个字段含义 键入E进入编辑，在文件底部有如下配置
+# Default prompt PS1=&amp;#34;%n %m %1~ %# &amp;#34; 对应终端实际显示前缀为
+jeff jeffzhangdeMacBook-Pro ~ % %n %m %1～ %# jeff jeffzhangdeMacBook-Pro ~ % 用户名称 主机名称 当前所在目录 分隔符号 · 修改PS1变量 如希望终端前缀显示为
+jeff ~ &amp;gt; 按下I执行插入操作</description>
+    </item>
+    
+    <item>
+      <title>My First Post</title>
+      <link>https://mynewhugosite.com/posts/my-first-post/</link>
+      <pubDate>Thu, 03 Sep 2020 17:27:59 +0700</pubDate>
+      
+      <guid>https://mynewhugosite.com/posts/my-first-post/</guid>
+      <description>Here&amp;rsquo;s an example blog post.
+Thanks to Eric Murphy, the provider of this initial theme.
+123
+qwe 123
+123
+123 qwe
+俣哈哈
+2乐好 苛
+在</description>
+    </item>
+    
+  </channel>
+</rss>

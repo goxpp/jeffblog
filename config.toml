@@ -1,0 +1,17 @@
+baseURL = "https://mynewhugosite.com"
+title = "Jeff's Blog"
+theme = "starter-theme"
+
+
+[menu]
+  [[menu.main]]
+    identifier = "posts"
+    name = "Posts"
+    url = "/posts"
+    weight = 10
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about"
+    weight = 20

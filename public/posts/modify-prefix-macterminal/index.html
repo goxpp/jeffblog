@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>修改Mac终端的前缀 | Jeff&#39;s Blog</title>
+
+	<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+
+	</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a class="logo" href="https://mynewhugosite.com">
+      Jeff&#39;s Blog
+    </a>
+    <ul class="main-menu">
+      
+      <li>
+        <a href="/posts">Posts</a>
+      </li>
+      
+      <li>
+        <a href="/about">About</a>
+      </li>
+      
+    </ul>
+  </nav>
+</header>
+
+
+<main class="content">
+
+<link rel="stylesheet" href="/css/md.css" type="text/css" media="all" />
+
+<style>
+     
+    .fixed-navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #fff;  
+         
+    }
+</style>
+
+<h1>修改Mac终端的前缀</h1>
+
+
+<p>进入终端时前缀太长了😤</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>jeff jeffzhangdeMacBook-Pro ~ % 	
+</span></span></code></pre></div><p>想要修改并保留有用信息⬇️</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>jeff ~ &gt; 
+</span></span></code></pre></div><h2 id="1-修改文件权限">1. 修改文件权限</h2>
+<p>根据自己系统选择 <strong>其中一个</strong> 命令执行</p>
+<p> macOS Catalina之后（包含）【大多数选择】</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo chmod -R <span style="color:#ae81ff">777</span> /etc/zshrc
+</span></span></code></pre></div><p> macOS Catalina之前（不包含）注：如旧系统 以下修改配置不适用</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo chmod -R <span style="color:#ae81ff">777</span> /etc/bashrc
+</span></span></code></pre></div><p>输入当前用户的密码，权限修改完成</p>
+<h2 id="2-修改配置">2. 修改配置</h2>
+<p>以<code>/etc/zshrc</code>为例</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vi /etc/zshrc
+</span></span></code></pre></div><p>输入后会显示如下</p>
+<p><img src="http://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20230920111346909.png" alt="image-20230920111346909"></p>
+<h3 id="-各个字段含义">· 各个字段含义</h3>
+<p>键入<code>E</code>进入编辑，在文件底部有如下配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># Default prompt</span>
+</span></span><span style="display:flex;"><span>PS1<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;%n %m %1~ %# &#34;</span>
+</span></span></code></pre></div><p>对应终端实际显示前缀为</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>jeff jeffzhangdeMacBook-Pro ~ % 	
+</span></span></code></pre></div><table>
+<thead>
+<tr>
+<th>%n</th>
+<th>%m</th>
+<th>%1～</th>
+<th>%#</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jeff</td>
+<td>jeffzhangdeMacBook-Pro</td>
+<td>~</td>
+<td>%</td>
+</tr>
+<tr>
+<td>用户名称</td>
+<td>主机名称</td>
+<td>当前所在目录</td>
+<td>分隔符号</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-修改ps1变量">· 修改PS1变量</h3>
+<p>如希望终端前缀显示为</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>jeff ~ &gt; 
+</span></span></code></pre></div><p>按下<code>I</code>执行插入操作</p>
+<p>将PS1修改为</p>
+<pre tabindex="0"><code>PS1=&#34;%n %1~ &gt; &#34;
+</code></pre><p>确认无误后，按<code>ESC</code>退出编辑</p>
+<p>键入<code>:wq</code>保存当前修改</p>
+<h2 id="3-验证">3. 验证</h2>
+<p><code>command+Q</code>退出终端，并重新打开，终端显示</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>jeff ~ &gt; cd Documents
+</span></span><span style="display:flex;"><span>jeff Documents &gt; 
+</span></span></code></pre></div><p>配置成功！🥳</p>
+
+
+</main>
+	
+<footer>
+	<p>&copy;2023 Jeff&#39;s Blog</p>
+</footer>
+
+</body>
+</html>
+

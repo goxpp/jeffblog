@@ -1,0 +1,142 @@
+/* md.css */
+
+/* 样式化段落文本 */
+
+/* 添加分隔线到 h1 标题 */
+h1 {
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	font-weight: bold;
+	margin-bottom: 1rem;
+	border-bottom: 1px solid #eaeaea; /* 添加分隔线样式 */
+	padding-bottom: 0.5rem; /* 调整分隔线和文本的间距 */
+  }
+
+  /* 样式化标题 */
+h2, h3, h4, h5, h6 {
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	font-weight: bold;
+	margin-bottom: 1rem;
+  }
+  
+  /* 样式化 h2 标题 */
+  h2 {
+	font-size: 1.5rem; /* 调整 h2 的字体大小 */
+  border-bottom: 1px solid #eee; /* 添加分隔线样式 */
+  }
+  
+  /* 样式化 h3 标题 */
+  h3 {
+	font-size: 1.25rem; /* 调整 h3 的字体大小 */
+  }
+  
+  
+  /* 样式化列表 */
+  ul, ol {
+	margin-left: 1.5rem;
+	margin-bottom: 1.25rem;
+  }
+  
+div.highlight pre{
+    background-color: #f8f8f8 ; /* 代码块背景色 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: "Courier New", Courier, monospace; /* 代码字体 */
+    font-size: 14px; /* 代码字体大小 */
+    line-height: 1.5; /* 行高 */
+    overflow-x: auto; /* 横向滚动条 */
+  
+  }
+/* 代码块样式 */
+pre {
+    background-color: #f8f8f8; /* 代码块背景色 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: "Courier New", Courier, monospace; /* 代码字体 */
+    font-size: 14px; /* 代码字体大小 */
+    line-height: 1.5; /* 行高 */
+    overflow-x: auto; /* 横向滚动条 */
+}
+/* 代码块行号样式 */
+pre code::before {
+    content: attr(data-line); /* 显示行号 */
+    color: #999; /* 行号颜色 */
+    display: block;
+    position: absolute;
+    left: -2rem; /* 调整行号位置 */
+    text-align: right;
+    width: 2rem;
+}
+
+/* 代码块语法高亮样式（可以使用Prism.js等库来实现语法高亮） */
+.token.comment {
+    color: #888; /* 注释颜色 */
+}
+
+.token.keyword {
+    color: #0077b3; /* 关键字颜色 */
+}
+
+.token.string {
+    color: #009900; /* 字符串颜色 */
+}
+
+/* 其他语法元素的样式 */
+/* 例如：.token.function, .token.variable, .token.operator, 等等 */
+
+/* 暗色主题的代码块样式示例 */
+/*pre code {
+    background-color: #282c35;
+    border: 1px solid #444;
+    color: #abb2bf;
+}*/
+
+/* 如果你使用了Prism.js等语法高亮库，可以根据库的样式进行自定义 */
+
+/* 可根据需要自定义其他代码块样式 */
+
+  
+  /* 样式化引用块（blockquote） */
+  blockquote {
+	margin: 0;
+	padding: 0.5rem 1rem;
+	background-color: #f9f9f9;
+	border-left: 4px solid #007ee5;
+  }
+  
+  /* 样式化图片 */
+  img {
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 1rem;
+	border: 1px solid #d1d5da; /* 添加边框样式 */
+	border-radius: 3px; /* 添加圆角 */
+  }
+  
+  /* 样式化表格 */
+  table {
+	width: 100%;
+	border-collapse: collapse;
+  }
+  
+  th, td {
+	border: 1px solid #d1d5da;
+	padding: 0.5rem;
+	text-align: left;
+  }
+  
+  /* 样式化任务列表 */
+  .task-list-item {
+	list-style-type: none;
+	margin-left: -1.5rem;
+  }
+  
+  .task-list-item input[type="checkbox"] {
+	margin-right: 0.25rem;
+  }
+  
+  /* 更多自定义样式 */
+  /* 你可以根据需要添加更多的自定义样式，以改善 Markdown 渲染的外观 */
+  
+  
