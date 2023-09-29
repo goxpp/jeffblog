@@ -8,5 +8,7 @@ Here's an example blog post.
 
 Thanks to [Eric Murphy](https://github.com/ericmurphyxyz/hugo-starter-theme/tree/master), the provider of this initial theme.
 
+Thanks [HUGO](https://gohugo.io) !
+
 
 
