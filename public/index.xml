@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home on Jeff&#39;s Blog</title>
-    <link>https://mynewhugosite.com/</link>
+    <link>https://goxpp.github.io/</link>
     <description>Recent content in Home on Jeff&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 26 Sep 2023 18:21:43 +0800</lastBuildDate><atom:link href="https://mynewhugosite.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Sep 2023 18:21:43 +0800</lastBuildDate><atom:link href="https://goxpp.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>修改Mac终端的前缀</title>
-      <link>https://mynewhugosite.com/posts/modify-prefix-macterminal/</link>
+      <link>https://goxpp.github.io/posts/modify-prefix-macterminal/</link>
       <pubDate>Tue, 26 Sep 2023 18:21:43 +0800</pubDate>
       
-      <guid>https://mynewhugosite.com/posts/modify-prefix-macterminal/</guid>
+      <guid>https://goxpp.github.io/posts/modify-prefix-macterminal/</guid>
       <description>进入终端时前缀太长了😤
 jeff jeffzhangdeMacBook-Pro ~ % 想要修改并保留有用信息⬇️
 jeff ~ &amp;gt; 1. 修改文件权限 根据自己系统选择 其中一个 命令执行
@@ -29,27 +29,21 @@ jeff ~ &amp;gt; 按下I执行插入操作</description>
     
     <item>
       <title>My First Post</title>
-      <link>https://mynewhugosite.com/posts/my-first-post/</link>
+      <link>https://goxpp.github.io/posts/my-first-post/</link>
       <pubDate>Thu, 03 Sep 2020 17:27:59 +0700</pubDate>
       
-      <guid>https://mynewhugosite.com/posts/my-first-post/</guid>
+      <guid>https://goxpp.github.io/posts/my-first-post/</guid>
       <description>Here&amp;rsquo;s an example blog post.
 Thanks to Eric Murphy, the provider of this initial theme.
-123
-qwe 123
-123
-123 qwe
-俣哈哈
-2乐好 苛
-在</description>
+Thanks HUGO !</description>
     </item>
     
     <item>
       <title>About</title>
-      <link>https://mynewhugosite.com/about/</link>
+      <link>https://goxpp.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://mynewhugosite.com/about/</guid>
+      <guid>https://goxpp.github.io/about/</guid>
       <description>Here&amp;rsquo;s a bit about me.</description>
     </item>
     
