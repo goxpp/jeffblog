@@ -1906,8 +1906,6 @@ mysql 检查运行时间 先运行sql再运行此语句
 show profiles
 ```
 
-test workflow
-
 
 
 
