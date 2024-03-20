@@ -30,7 +30,7 @@ jobs:
 
             - name: Deploy Web
               uses: peaceiris/actions-gh-pages@v3
-              with:
+              with: 
                   PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
                   EXTERNAL_REPOSITORY: goxpp/goxpp.github.io
                   PUBLISH_BRANCH: main
