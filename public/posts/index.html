@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head >
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,6 +21,37 @@
              
         }
     </style>
+	
+	<script>
+		
+		$(document).ready(function () {
+			
+			var header = $('header');
+			
+			
+			var lastScrollTop = 0;
+	
+			
+			$(window).scroll(function () {
+				
+				var st = $(this).scrollTop();
+				
+				
+				if (st > lastScrollTop) {
+					
+					header.addClass('hidden');
+				} else {
+					
+					header.removeClass('hidden');
+				}
+	
+				
+				lastScrollTop = st;
+			});
+		});
+	</script>
+	
+
 
 </head>
 
@@ -55,6 +87,33 @@
 
 <article class="post-snippet">
   <h3>
+    <a href="/posts/git-learn/" style="color: #333333;">Git常用命令的学习与理解</a>
+  </h3>
+	<time datetime="2023-12-13T17:53:55&#43;08:00" style="color: #666666;">
+		December 13, 2023
+	</time>
+</article>
+
+<article class="post-snippet">
+  <h3>
+    <a href="/posts/my-sql-note/" style="color: #333333;">My Sql Note</a>
+  </h3>
+	<time datetime="2023-10-09T14:55:11&#43;08:00" style="color: #666666;">
+		October 9, 2023
+	</time>
+</article>
+
+<article class="post-snippet">
+  <h3>
+    <a href="/posts/deleteblankfile/" style="color: #333333;">删除目录下空文件夹与文件</a>
+  </h3>
+	<time datetime="2023-10-03T18:08:42&#43;08:00" style="color: #666666;">
+		October 3, 2023
+	</time>
+</article>
+
+<article class="post-snippet">
+  <h3>
     <a href="/posts/modify-prefix-macterminal/" style="color: #333333;">修改Mac终端的前缀</a>
   </h3>
 	<time datetime="2023-09-26T18:21:43&#43;08:00" style="color: #666666;">
@@ -75,7 +134,7 @@
 </main>
 	
 <footer>
-	<p>&copy;2023 Jeff&#39;s Blog</p>
+	<p>&copy;2024 Jeff&#39;s Blog</p>
 </footer>
 
 </body>

@@ -2,11 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://goxpp.github.io/posts/git-learn/</loc>
+    <lastmod>2023-12-13T17:53:55+08:00</lastmod>
+  </url><url>
     <loc>https://goxpp.github.io/</loc>
-    <lastmod>2023-09-26T18:21:43+08:00</lastmod>
+    <lastmod>2023-12-13T17:53:55+08:00</lastmod>
   </url><url>
     <loc>https://goxpp.github.io/posts/</loc>
-    <lastmod>2023-09-26T18:21:43+08:00</lastmod>
+    <lastmod>2023-12-13T17:53:55+08:00</lastmod>
+  </url><url>
+    <loc>https://goxpp.github.io/posts/my-sql-note/</loc>
+    <lastmod>2023-10-09T14:55:11+08:00</lastmod>
+  </url><url>
+    <loc>https://goxpp.github.io/posts/deleteblankfile/</loc>
+    <lastmod>2023-10-03T18:08:42+08:00</lastmod>
   </url><url>
     <loc>https://goxpp.github.io/posts/modify-prefix-macterminal/</loc>
     <lastmod>2023-09-26T18:21:43+08:00</lastmod>

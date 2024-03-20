@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>My Sql Note | Jeff&#39;s Blog</title>
+
+	<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+
+	<style>
+         
+		header {
+            position: fixed;
+            top: 0;
+            width: 100%;  
+            background-color: #fff;  
+             
+        }
+    </style>
+	
+	<script>
+		
+		$(document).ready(function () {
+			
+			var header = $('header');
+			
+			
+			var lastScrollTop = 0;
+	
+			
+			$(window).scroll(function () {
+				
+				var st = $(this).scrollTop();
+				
+				
+				if (st > lastScrollTop) {
+					
+					header.addClass('hidden');
+				} else {
+					
+					header.removeClass('hidden');
+				}
+	
+				
+				lastScrollTop = st;
+			});
+		});
+	</script>
+	
+
+
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a class="logo" href="https://goxpp.github.io">
+      Jeff&#39;s Blog
+    </a>
+    <ul class="main-menu">
+      
+      <li>
+        <a href="/posts">Posts</a>
+      </li>
+      
+      <li>
+        <a href="/about">About</a>
+      </li>
+      
+    </ul>
+  </nav>
+</header>
+
+
+<main class="content">
+
+<link rel="stylesheet" href="/css/md.css" type="text/css" media="all" />
+
+
+<h1>My Sql Note</h1>
+
+
+<h2 id="数据库"><strong>数据库</strong></h2>
+<h3 id="什么是数据库">什么是数据库</h3>
+<p>按照一定结构组织,管理和存储数据的仓库</p>
+<h3 id="数据库的分类">数据库的分类</h3>
+<ul>
+<li>层级数据库</li>
+<li>网状型数据库(父节点不唯一)</li>
+<li>关系型数据库(当前流行(大多数)</li>
+</ul>
+<p>​			特点:由二维表格组成(有行有列)</p>
+<h3 id="mysql数据库中一些组成关系">mysql数据库中一些组成关系</h3>
+<p>​	MySQL,是一款关系型数据库的产品,安装mysql只是安装了mysql(数据库)的服务</p>
+<p>​	MySQL数据库管理系统&ndash;&gt;若干数据库&ndash;&gt;若干库中的表&ndash;&gt;若干表中的数据(尽量不要超过1亿条)</p>
+<h3 id="sql结构化查询语言">SQL(结构化查询语言)</h3>
+<h4 id="简介">简介</h4>
+<p>​	Structured Query Language(结构化查询语言),它是用于操作关系开数据库的一套语法,绝大多数关系 开数据库都支持.</p>
+<p>​	方言:各个数据库厂商针对结构化查询语言的扩展,每个数据库厂商方言,只能自己数据库用</p>
+<h4 id="组成部分">组成部分</h4>
+<p>​	DDL:数据定义语言 Data Definition Language 建库建表,删除,修改数据库和表结构</p>
+<p>​	DML:(重要)数据操作语言Data Manipulation Language 操作数据:插入,更新,删除,它是数据的操作</p>
+<p>​	DQL:(最重要)数据查询语言Data Query Language 查询数据 (最难)</p>
+<p>​	DCL:数据控制语言Data Control Language 和数据库用户,以及用户角色相关(运维和DBA数据库管理员)</p>
+<p>​	CCL: 指针控制语言指针控制语言Cursor Control Language 在数据库中编写数据库代码时使用的,实际开发涉及很少(方言太多)</p>
+<p>​	TPL:事务处理语言Transaction Processing Language  和事务处理相关的(TCL Transaction Control Language事务控制语言)</p>
+<h4 id="ddl">DDL</h4>
+<h5 id="作用">作用</h5>
+<p>用于创建,修改,删除数据库</p>
+<p>用于创建数据表,修改表结构,删除数据表</p>
+<h5 id="分析">分析</h5>
+<p>实际开发常用:创建数据库,创建数据表</p>
+<h5 id="语法">语法</h5>
+<ul>
+<li>
+<p><strong>连接数据库</strong>:<code>mysql -u用户名 -p密码  </code></p>
+</li>
+<li>
+<p><strong>创建库</strong>:<code>create database[if not exists]  数据库名称</code>;   名称不能是中文,数字可以是名称,但不能作为第一个字符</p>
+<p>​	创建一个名为gorilla的数据库:<code>create database gorilla</code>;</p>
+<p>​	Character set:用于指定创建数据库的字符集.如果不设定,使用mysql安装时的字符集,UTF-8</p>
+<p>​	Collate:用于指定创建数据库时的校对规则.每个字符集都有默认的校对规则</p>
+</li>
+<li>
+<p><strong>查看数据库</strong>:<code>show databases</code>;</p>
+</li>
+<li>
+<p>删除数据库(不常用)drop database [if  exists] 数据库名称; drop database gorilla;  (删除gorilla的数据库)</p>
+</li>
+<li>
+<p>使用数据库:<code>use 数据库名称</code></p>
+</li>
+<li>
+<p>快速创建一个相同的表(创建的是表结构,内容不会复制)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#960050;background-color:#1e0010">表名</span> <span style="color:#66d9ef">like</span> <span style="color:#960050;background-color:#1e0010">要复制的表</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#960050;background-color:#1e0010">表名</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">要复制的表</span>;<span style="color:#75715e">/*蠕虫复制,会复制数据*/</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>创建表</strong>:</p>
+<p>create table 表名(列名  数据类型 (有的数据类型要指定长度),列名  数据类型,列名  数据类型,列名  数据类型);</p>
+<p>列名之间用&quot;,&ldquo;格开  最后一个列名不用写&rdquo;,&quot;</p>
+<p>decimal用在钱上</p>
+<p>varchar 可变长度字符</p>
+<p>char 固定长度字符</p>
+<p>bit 位类型(只存0和1)</p>
+</li>
+</ul>
+<p>​		<strong>需要指定长度</strong>:</p>
+<p>​			char(10)  [&lsquo;a&rsquo;,&lsquo;b&rsquo;,&rsquo;&rsquo;,&rsquo;&rsquo;,&rsquo;&rsquo;,&rsquo;&rsquo;,&rsquo;&rsquo;,&rsquo;&rsquo;,&rsquo;&rsquo;,&rsquo;&rsquo;]</p>
+<p>​			varchar(10)  [&lsquo;a&rsquo;,&lsquo;b&rsquo;]</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20210527101815491.png" alt="image-20210527101815491"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>	<span style="color:#960050;background-color:#1e0010">例子</span>:
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">varchar(长度 255) : 就是字符串 ,  varchar(10) 最大存10个字符,但是变长字符串根据实际存储内容改变, 例如: 添加的数据为 abc  长度就为3 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">char(长度 255) :字符串  char(10) : 固定长度为10  例如 添加的数据为  abc 剩下7位空格补齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">decimal（m,d）:  m表示长度(整数+小数的长度) d表示小数位     decimal(11,2) : 9位整数  2位小数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> stu(
+</span></span><span style="display:flex;"><span>		id int,
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">`</span>name<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">20</span>), 
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    重音符 `关键字`  name是sql的关键字,所以要用``
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    取消关键字
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
+</span></span><span style="display:flex;"><span>		gender varchar(<span style="color:#ae81ff">10</span>),
+</span></span><span style="display:flex;"><span>		age int,
+</span></span><span style="display:flex;"><span>		birthday date,
+</span></span><span style="display:flex;"><span>		telephone varchar(<span style="color:#ae81ff">20</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><ul>
+<li>删除表</li>
+</ul>
+<p>​	<code>drop table stu;</code></p>
+<h5 id="数据库文档">数据库文档</h5>
+<p>​	mysql.chm(13章)</p>
+<p>​		创建表关键字:create</p>
+<p>​		删除表关键字:drop</p>
+<p>​		修改表关键字:alter</p>
+<h4 id="dml数据操作语言">DML数据操作语言</h4>
+<h5 id="作用-1">作用:</h5>
+<p>​		往表中插入数据</p>
+<p>​		修改表中的数据</p>
+<p>​		删除表中的数据</p>
+<h5 id="插入">插入:</h5>
+<h6 id="语法-1">语法:</h6>
+<p><code>insert into 表名称(列名称,列名称...)values(列值,列值...) ;</code>    要求列名称与列值数量完全一致,一一对应</p>
+<p>insert into 表名 values(值1,值2,值3);</p>
+<blockquote>
+<p>缩写语法不能省略任何字段</p>
+<p>值和字段的顺序类型,必须匹配</p>
+<p>列类型是varchar或者char,values里面要用&rsquo;包裹起来&rsquo;或者&quot;包裹起来&quot;;</p>
+</blockquote>
+<h6 id="批量插入">批量插入:</h6>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> <span style="color:#960050;background-color:#1e0010">表名称</span>(<span style="color:#960050;background-color:#1e0010">列名称</span>,<span style="color:#960050;background-color:#1e0010">列名称</span>...<span style="color:#960050;background-color:#1e0010">这里可以省略部分字段</span>)<span style="color:#66d9ef">values</span>(<span style="color:#960050;background-color:#1e0010">列值</span>,<span style="color:#960050;background-color:#1e0010">列值</span>...) ,
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">values</span>(<span style="color:#960050;background-color:#1e0010">列值</span>,<span style="color:#960050;background-color:#1e0010">列值</span>...) ,
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">values</span>(<span style="color:#960050;background-color:#1e0010">列值</span>,<span style="color:#960050;background-color:#1e0010">列值</span>...),
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">values</span>(<span style="color:#960050;background-color:#1e0010">列值</span>,<span style="color:#960050;background-color:#1e0010">列值</span>...) ;
+</span></span></code></pre></div><h5 id="删除">删除</h5>
+<h6 id="语法-2">语法:</h6>
+<p>​	delete form 表名称[where 条件];  不指定where条件,表中数据全部删除,不能删除列,只能删除行</p>
+<h6 id="常用条件">常用条件:</h6>
+<p>拼接条件关键字where,在更新和查询操作时,涉及条件也是用这个关键字</p>
+<p><strong>条件</strong>有:</p>
+<p>​					=           &gt;             &lt;             &gt;=                  &lt;=            != (&lt;&gt;)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">语句</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">between  值1  and  值2</td>
+<td style="text-align:left">在值1和值2之间, 包头包尾</td>
+</tr>
+<tr>
+<td style="text-align:left">in(值1,值2..值n)</td>
+<td style="text-align:left">在值1,值2&hellip;值 n 之中都可</td>
+</tr>
+<tr>
+<td style="text-align:left">is null</td>
+<td style="text-align:left">为null</td>
+</tr>
+<tr>
+<td style="text-align:left">is not null</td>
+<td style="text-align:left">不为null</td>
+</tr>
+</tbody>
+</table>
+<p><strong>条件拼接</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>and</td>
+<td>条件1 与 条件2	(同时满足条件1与条件2)</td>
+</tr>
+<tr>
+<td>or</td>
+<td>条件1 或 条件2</td>
+</tr>
+<tr>
+<td>not</td>
+<td>非条件 1</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">delete</span>  form student <span style="color:#66d9ef">where</span> age <span style="color:#66d9ef">in</span> (<span style="color:#ae81ff">20</span>,<span style="color:#ae81ff">15</span>,<span style="color:#ae81ff">50</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*删除age为20, 15 ,20 的用户*/</span>
+</span></span></code></pre></div><h5 id="摧毁表">摧毁表</h5>
+<p><code>truncate table 表名称</code></p>
+<p>摧毁表<strong>不能添加条件</strong></p>
+<p>​			作用: 清除表中数据,并且重新构建表结构</p>
+<h6 id="truncate和delete的区别面试题">truncate和delete的区别(面试题)</h6>
+<ol>
+<li>
+<p>条件删除</p>
+<blockquote>
+<p>delete可以带where;</p>
+<p>truncate 不带,删除整个表</p>
+</blockquote>
+</li>
+<li>
+<p>事务回滚</p>
+<blockquote>
+<p>delete是DML(数据操作语言),操作时原数据被放到rollback segment中,可以被回滚</p>
+<p>truncate是DDL(数据定义语言),不能被回滚</p>
+<blockquote>
+<p>rollback segment 数据库中的一些存储空间,用来临时保存当数据库发生改变时候的先前值,两个目的:</p>
+<p>1.用户想rollback到修改前的值,就要从rollback segment里面获取,当然只对transaction过程有效!一旦commit,rollback segment就会失.</p>
+<p>2.并发session访问一个数据值改变但还没有提交的事务的表,select语句开始读取一个表的同时,一个事务也在修改,修改前的值就会存到rollback segment里,select语句也是从rollback segment里面读取表的值.</p>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<p>清理速度</p>
+<blockquote>
+<p>delete每删除一行,要保存事务日志,在数据量大的情况下,速度较慢</p>
+<p>truncate不能回滚,数据量大时相较delete速度快</p>
+</blockquote>
+</li>
+<li>
+<p>高水位重置</p>
+<blockquote>
+<p>不断进行表记录的DML操作,不断提高表的高水位线(HWM),delete操作后,虽然数据删除,但并没有降低表的高水位!DML操作数据库容量只会上升,不会下降!在用了delete后select的速度和delete前一样</p>
+<p>而truncate后会重置高水位线,数据库容量也会被重置,之后再进行DML操作速度也会有所提升</p>
+</blockquote>
+</li>
+</ol>
+<p>truncate table 语法算DDL,删除表,重建表结构</p>
+<p>delete from 算DML,只删除表中数据</p>
+<h5 id="更新表">更新表</h5>
+<p><code>update 表名 set 列名 = 列值,列名 = 列值,列名 = 列值[where条件];</code></p>
+<p>没加条件,则更新所有数据</p>
+<h4 id="dql数据库查询语言">DQL数据库查询语言</h4>
+<h5 id="作用-2">作用:</h5>
+<p>​	用于查询数据</p>
+<h5 id="语法-3">语法:</h5>
+<p>​	基础    <code>select 列名1,列名2...from 表名 where 条件;</code></p>
+<p>​	查询全部列    <code>select * from 表名 where 条件;</code></p>
+<h5 id="去重操作">去重操作:</h5>
+<p>​	关键字:distinct</p>
+<p>​	用法:<code>select distinct 列名 from 表名 where 条件; </code>   (通常列名为1个)</p>
+<h5 id="别名">别名:</h5>
+<p>​	作用:给查询结果的列名起别名,原始列名不变,只是显示变了</p>
+<p>​	用法:</p>
+<ul>
+<li>
+<p>标准 select 列名1  as 别名  ,列名2 as 别名,&hellip;from 表名 where 条件;</p>
+</li>
+<li>
+<p>简写 select 列名1  别名 ,列名2 from 表名 where 条件;</p>
+</li>
+</ul>
+<h5 id="like模糊查询">like(模糊查询)</h5>
+<p>​	作用:模糊查询</p>
+<p>​	特殊符号:%表示任意内容</p>
+<p>​	写法:	like&rsquo;固定内容%&rsquo;   以固定内容开头</p>
+<p>​				like&rsquo;%固定内容&rsquo;    以固定内容结尾</p>
+<p>​				like&rsquo;%固定内容%&rsquo;  包含固定内容</p>
+<p>​    ex:  like&rsquo;马%&rsquo; (第一个字是马)     like&rsquo;%马%&rsquo;(有马字就可以)</p>
+<p>​    特殊符号:_表示占位符,有一个就代表要有一个字符</p>
+<p>​	ex:like&rsquo;马__&rsquo;(第一个字是马,且为三个字)</p>
+<h5 id="排序查询">排序查询</h5>
+<h6 id="排序关键字">排序关键字:</h6>
+<p>​		order by 列名  asc(升序(默认))|desc(降序)</p>
+<h6 id="ex">ex:</h6>
+<ul>
+<li>
+<p>selcect * from stu order by age desc;(查询年龄,以降序排序)</p>
+</li>
+<li>
+<p>selcect * from stu order  by age desc ,math asc(查询年龄与成绩,年龄降序排序,成绩升序排序)</p>
+</li>
+</ul>
+<h5 id="聚合查询">聚合查询</h5>
+<h6 id="特点">特点:</h6>
+<p>把表中指定列内容聚合到一起</p>
+<h6 id="聚合函数">聚合函数:</h6>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sum(列名)</td>
+<td>求和</td>
+</tr>
+<tr>
+<td>max(列名)</td>
+<td>最大</td>
+</tr>
+<tr>
+<td>min(列名)</td>
+<td>最小</td>
+</tr>
+<tr>
+<td>avg(列名)</td>
+<td>平均</td>
+</tr>
+<tr>
+<td>count(列名)</td>
+<td>记录总数	(为null的不参与计数,一般为id 或者*)</td>
+</tr>
+</tbody>
+</table>
+<p>count(里面可以不写列名) 可以是</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span><span style="color:#75715e">#输出表中Person表中email出现的次数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">select</span> <span style="color:#a6e22e">count</span>(<span style="color:#ae81ff">0</span>),email <span style="color:#66d9ef">from</span> Person
+</span></span></code></pre></div><h6 id="ex-1">ex:</h6>
+<p><code>select sum(math),count(math),sum(math)/count(*)from stu;</code>(查询数学成绩的总和,成绩的个数,平均数)</p>
+<h5 id="分组查询">分组查询:</h5>
+<h6 id="含义">含义:</h6>
+<p>​	把具有相同特征的数据分成一组</p>
+<h6 id="语法-4">语法:</h6>
+<p>​	group by 列名</p>
+<p>​	分组后加条件:<strong>having条件</strong>(having可以使用衍生列,用于分组后的筛选,出现在groupby关键字后;where只能使用原始表中存在的列)</p>
+<p>​	组合用法 :group by 列名 having 条件</p>
+<h6 id="注意">注意:</h6>
+<p>​	使用分组查询之后 ,查询的列名就不能再是*(全部列)了,只能是被分组的列以及聚合到函数.</p>
+<h6 id="ex-2">ex:</h6>
+<p>按男女分组,查询男女各多少人</p>
+<p>​	<code>select sex,count(*) from student group by sex;</code></p>
+<p>查询年龄大于25岁的人,按性别分组</p>
+<p>​	<code>select sex,count(*) from student where age&gt;25 group by sex;</code></p>
+<p>统计每组人数,查询年龄 大于25岁的人</p>
+<p>​	<code>select age,count(*) from student where age&gt;25 group by age;</code> 先过滤条件后分组</p>
+<p>​	<code>select age,count(*) from student group by age having age&gt;25;</code>先分组再过滤条件</p>
+<h5 id="分页查询">分页查询</h5>
+<h6 id="分页">分页:</h6>
+<p>​	把数据分批次查询出来</p>
+<h6 id="分页的思想">分页的思想:</h6>
+<p>​	换(时间换空间,空间换时间)</p>
+<h6 id="分页的意义">分页的意义:</h6>
+<p>​	经过多次查询,节省内存空间</p>
+<h6 id="实现思路">实现思路:</h6>
+<p>​	固定值:每页显示的条数</p>
+<p>​	总记录数</p>
+<p>​	当前页</p>
+<h6 id="sql语句分页">SQL语句分页:</h6>
+<p>​	关键字:limit   (mysql方言)</p>
+<p>​	两个参数:</p>
+<p>​		1.查询数据的开始记录索引,从0开始</p>
+<p>​		2.每次查询多少条数据出来</p>
+<p>​	语法格式:</p>
+<p>​		limit开始记录数索引,每次查询的条数</p>
+<p>​	ex:</p>
+<p>​		查询学生表的数据,5条分页</p>
+<p>​		select * from student limit 0,5;/<em>第一页</em>/</p>
+<p>​		select * from student limit 5,5;/<em>第二页</em>/</p>
+<p>​		select * from student limit 10,5;/<em>第三页</em>/</p>
+<p>​		计算开始记录索引的公式:  *<em>(当前页-1)<em>每页显示的条数</em></em></p>
+<p>​		计算总页数:  总条数 % 每页显示的条数 == 0 ? (总条数/每页显示的条数):(总条数/每页显示的条数+1)</p>
+<p>​								如果总条数15,每页5条,分3页</p>
+<p>​								如果总条数16,每页6条,分3页</p>
+<h3 id="数据库备份">数据库备份:</h3>
+<p>dump&hellip; (备份)   上面的是恢复</p>
+<h3 id="数据完整性">数据完整性</h3>
+<h4 id="作用-3">作用:</h4>
+<p>​	保证数据的完整和准确,防止用户误输入,引起数据错误</p>
+<p>​	实现的方式就是添加约束</p>
+<h4 id="约束的种类四种">约束的种类:四种</h4>
+<h5 id="1实体完整性">1.实体完整性</h5>
+<p>​			保证 表中第每条数据的唯一性</p>
+<p>​			方式:	添加 主键</p>
+<p>​			主键特点:唯一且非空</p>
+<h6 id="添加方式">添加方式:</h6>
+<p>​				1.navicate右键Design Table ,id后点一下设置主键</p>
+<p>​				2.语法:</p>
+<p>​						创建表时:</p>
+<p>​						<code>create table 表名 (列名 数据类型 primary key,列名 数据类型,...);</code>   //只能给某一个列设为主键</p>
+<p>​						<code>create table 表名 (列名1 数据类型,列名2 数据类型,列名 数据类型 primary key(列名1,列名2));</code>//可以在括号内写多个列名,用逗号分隔</p>
+<p>​						修改表时:</p>
+<p>​					<code>alter table 表名 add primary key (列名)</code></p>
+<p>​		主键自增长</p>
+<p>​			自动增长要求:<strong>必须整型</strong></p>
+<p>​			使用方式:</p>
+<p>​				<code>create table  表名(列名1 数据类型 primary key auto_increment,列名2 数据类型, 列名3 数据类型)</code></p>
+<p>​			<strong>在设置了主键自增长之后,在插入数据时就无须关注主键列的值</strong></p>
+<h5 id="2域完整性">2.域完整性</h5>
+<p>​		保证每一列数据的准确性</p>
+<p>​		a.数据类型的限定 int只能输数值,  date 只能输入日期</p>
+<p>​		b.非空限定 在类型后加not null 不是空</p>
+<p>​		c.唯一限定 在类型后加 unique 唯一 不一定非空</p>
+<h5 id="3参照完整性">3.参照完整性</h5>
+<p>​		多表的内容</p>
+<h5 id="4自定义完整性实际项目需求中添加">4.自定义完整性(实际项目需求中添加)</h5>
+<hr>
+<h3 id="数据库的多表">数据库的多表</h3>
+<h4 id="多表">多表</h4>
+<p>​	用数据库中的表描述现实生活中实体间的关系</p>
+<h4 id="表关系分类">表关系分类</h4>
+<p>​	一对多(多对一):一个学生只能属于一个班级,一个班级可以有多个学生</p>
+<p>​	一对一:一个人一个身份证号;一个身份证号只能属于一个人</p>
+<p>​	多对多: 一个老师可以教多个学生,一个学生可以被多个老师教</p>
+<h4 id="实现多表的方式">实现多表的方式</h4>
+<h5 id="一对多和多对一">一对多和多对一:</h5>
+<p>​			一为主表,多为从表</p>
+<p>​			在<strong>从表</strong>中加入<strong>外键</strong>字段</p>
+<p>​			外键:用于描述两个表之间的关系的<strong>字段</strong>,从表中有一列,该列的取值只能来源于主表的主键或者是null,外键一般叫主表名称_id</p>
+<h5 id="一对一不常见">一对一:(不常见)</h5>
+<p>​			1.通过外键实现:从表中添加 外键字段,给外键字段添加 非空和唯一约束</p>
+<p>​			2.通过主键实现:把主键字段同时设置为外键</p>
+<blockquote>
+<p>如果字段不多,可以把两个实体放到一张表中</p>
+</blockquote>
+<h5 id="多对多">多对多:</h5>
+<p>​			通过第三张表</p>
+<p>​			第三张表中包含两个外键字段,同时他们还是<strong>联合主键</strong></p>
+<h4 id="确定两张表关系的方式">确定两张表关系的方式</h4>
+<h5 id="找外键">找外键</h5>
+<p>有外键的一定是从表,外键字段引用的一定是主表的主键.两张表的关系一定是:一对多或一对一的一种,如果外键字段上有非空和唯一两个约束,那就是一对一.否则是一对多.</p>
+<p>多对多 一定是三张表.</p>
+<h4 id="java代码描述多表">Java代码描述多表</h4>
+<h5 id="一对多描述方式">一对多描述方式:</h5>
+<p>​	主表实体类(一的一方):包含一个从表实体的  集合  引用 private List&lt;从表实体&gt;名;并生成getset方法</p>
+<p>​	从表实体类(多的一方):包含一个主表实体的  对象  引用private 主表实体 名;并生成getset方法</p>
+<h5 id="一对一描述方式">一对一描述方式:</h5>
+<p>​	各自包含对方一个  对象  引用</p>
+<h5 id="多对多描述方式">多对多描述方式:</h5>
+<p>​	各自包含对方一个  集合  引用</p>
+<h4 id="数据库添加外键的语句固定">数据库添加外键的语句(固定)</h4>
+<ol>
+<li>
+<h5 id="创建表时">创建表时:</h5>
+</li>
+</ol>
+<p><code>constraint 约束名 foreign key(字段名) references 表名(字段名)</code></p>
+<pre tabindex="0"><code class="language-sq" data-lang="sq">create table user(
+	id int primary key auto_increment,/*主表的id*/
+	name varchar(100),......
+) ;
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> orders(
+</span></span><span style="display:flex;"><span>	id int <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span> auto_increment,<span style="color:#75715e">/*从表自己的id*/</span>
+</span></span><span style="display:flex;"><span>	order_num varchar(<span style="color:#ae81ff">100</span>),<span style="color:#f92672">//</span><span style="color:#960050;background-color:#1e0010">下划线分割</span>
+</span></span><span style="display:flex;"><span>	......
+</span></span><span style="display:flex;"><span>	user_id  int,<span style="color:#75715e">/*外键id*/</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">constraint</span> FK_ORDERS_USERID <span style="color:#66d9ef">foreign</span> <span style="color:#66d9ef">key</span>(user_id) <span style="color:#66d9ef">references</span> <span style="color:#66d9ef">user</span>(id)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">//</span><span style="color:#960050;background-color:#1e0010">或者</span><span style="color:#f92672">!!!</span><span style="color:#960050;background-color:#1e0010">下面这种方式</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">foreign</span> <span style="color:#66d9ef">key</span> (user_id) <span style="color:#66d9ef">references</span> <span style="color:#66d9ef">user</span>(id)
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><table>
+<thead>
+<tr>
+<th>constraint</th>
+<th>FK_ORDERS_USERID</th>
+<th>foreign key</th>
+<th>(user_id)</th>
+<th>references</th>
+<th>user</th>
+<th>(id)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>关键字</td>
+<td>外键名称(自己命名)</td>
+<td>外键(关键字)</td>
+<td>外键字段名称</td>
+<td>关联(关键字)</td>
+<td>主表名称</td>
+<td>主表主键</td>
+</tr>
+</tbody>
+</table>
+<p>外键名称库中唯一,不能重复,按照上方规范命名</p>
+<ol start="2">
+<li>
+<h5 id="修改表时">修改表时:</h5>
+</li>
+</ol>
+<p>参考mysql.chm</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> <span style="color:#960050;background-color:#1e0010">从表名字</span> <span style="color:#66d9ef">add</span> <span style="color:#66d9ef">foreign</span> <span style="color:#66d9ef">key</span>(<span style="color:#960050;background-color:#1e0010">外键字段名</span>) <span style="color:#66d9ef">references</span> <span style="color:#960050;background-color:#1e0010">一表名字</span>(<span style="color:#960050;background-color:#1e0010">主键名字</span>);
+</span></span></code></pre></div><h4 id="多表操作重要">多表操作(重要)</h4>
+<h5 id="增删改操作分析">增删改操作分析</h5>
+<h6 id="增">增:</h6>
+<p>​		主表:单表操作</p>
+<p>​		从表:可以提供主表信息的选择</p>
+<h6 id="改">改:</h6>
+<p>​		主表:单表操作</p>
+<p>​		从表:提供主表信息的选择</p>
+<h6 id="删">删</h6>
+<p>​		主表:</p>
+<p>​				~有从表引用时:</p>
+<p>​									从表数据有必要保留:	先把从表中引用的数据解除引用,然后再删除主表</p>
+<p>​									从表数据没有必要保留:删除主表时,同时删除从表数据.先删从表,才能册主表,否则报错</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20210528145318362.png" alt="image-20210528145318362"></p>
+<p>​				~无从表引用时:单表操作</p>
+<p>​		从表:单表操作</p>
+<h5 id="多表查询重点">多表查询(重点)</h5>
+<p>通过SQL语句实现,查询多张表的数据</p>
+<h6 id="交叉连接">交叉连接:</h6>
+<p>​	关键字: cross join</p>
+<p>​	用法:<code>select * from 表1 cross join 表2;</code> (显式)</p>
+<p>​			<code>select*from表1,表2;</code>(隐式)</p>
+<p>​	返回结果:两张表的笛卡尔积</p>
+<h6 id="内连接">内连接</h6>
+<p>​	关键字:inner join</p>
+<p>​	用法: <code>select * from 表1 inner join 表2 on 条件; </code>(显式)</p>
+<p>​			 <code>select * from表1,表2 where 条件;</code>(隐式)</p>
+<p>​	作用:在交叉连接基础之上,进行条件过滤,使结果正确</p>
+<h6 id="左外连接">左外连接</h6>
+<p>​	关键字:left outer join  (outer可以省略)</p>
+<p>​	用法 : select * from 表1 left outer join 表2(显式) on 条件;       (没有隐式,如果是隐式就和交叉连接无法区分)</p>
+<p>​	作用:返回两张表符合条件的数据之外 ,再返回左表的<strong>所有</strong>数据</p>
+<p>​			左表:写在left outer join 关键字左边的表</p>
+<h6 id="右外连接">右外连接</h6>
+<p>​	关键字:right outer join  (outer可以省略)</p>
+<p>​	用法 : select * from 表1 right outer join 表2(显式) on 条件;       (没有隐式,如果是隐式就和交叉连接无法区分)</p>
+<p>​	作用:返回两张表符合条件的数据之外 ,再返回右表的<strong>所有</strong>数据</p>
+<p>​			右表:写在right outer join 关键字右边的表</p>
+<h6 id="子查询">子查询</h6>
+<p>​	特点 :在一条查询语句中,又包含了另一条查询语句</p>
+<p>​	标识:外层查询语句(内层查询语句)    先执行小括号的,再执行外面的</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20210528160825555.png" alt="image-20210528160825555"></p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20210528161915615.png" alt="image-20210528161915615"></p>
+<p>自我一对多:</p>
+<p>​	在一张表中体现出一对多的效果</p>
+<p>​	ex:</p>
+<p>​		员工和上级都会放到员工表中;子部门和父部分 都会放到部门表中;子菜单和父菜单都是菜单</p>
+<p>​	在一张表中体现数据的父子关系(希望其是子菜单看外键(多个),希望其是父菜单看主键)</p>
+<blockquote>
+<p>左外连接和右外连接的交集是内连接</p>
+</blockquote>
+<h3 id="数据库事务重要不能卡壳">数据库事务(重要,不能卡壳)</h3>
+<h4 id="什么事务">什么事务</h4>
+<p>指逻辑上的一组操作,要么全成功,要么全失败</p>
+<h4 id="事务的特性">事务的特性</h4>
+<p>Atomicity原子性</p>
+<p>​	组成事务的各个单元为最小单位,不可再拆分</p>
+<p>Consistency一致性</p>
+<p>​	执行事务之前和之后的数据保持一致的状态(例:ab账户2000,转前2000,转账后总额也为2000)</p>
+<p>Isolcation隔离性</p>
+<p>​	多个事务并发访问时,互相不能被打扰</p>
+<p>Durability持久性</p>
+<p>​	当事务执行成功之后,是永久性的保存,不会受其他因素影响</p>
+<h4 id="事务的问题不考虑隔离性的多线程访问问题---全是错误的">事务的问题(不考虑隔离性的多线程访问问题)   全是错误的!</h4>
+<h5 id="脏读">脏读</h5>
+<p>一个事务读到了另一个事务<strong>未提交</strong>的数据</p>
+<h5 id="不可重复读">不可重复读</h5>
+<p>一个事务读到了另一个事务<strong>已经提交</strong>的update数据(因为被打扰,不满足隔离性)</p>
+<h5 id="幻虚读">幻(虚)读</h5>
+<p>一个事务读到了另一个事务<strong>已经提交</strong>的insert或delete数据</p>
+<h4 id="事务的隔离级别">事务的隔离级别</h4>
+<h5 id="读未提交read-uncommitted一般用大写">读未提交read uncommitted;(一般用大写)</h5>
+<p>​		以上三和错误情况都防不住.100%会发生以上三种错误情况</p>
+<h5 id="读已提交read-committed一般用大写">读已提交read committed;(一般用大写)</h5>
+<p>​		可以防住脏读,100%会发生不可重复读和幻读</p>
+<h5 id="可重复读repeatable-read一般用大写-mysql默认隔离级别">可重复读repeatable read;(一般用大写) (mysql默认隔离级别)</h5>
+<p>​		可以防住脏读和不可重复读,幻读有几率会发生</p>
+<h5 id="串行化序列化serializable一般用大写">串行化(序列化)serializable;(一般用大写)</h5>
+<p>​		以上三种错误情况都能防住</p>
+<h5 id="设置隔离级别的方式">设置隔离级别的方式:</h5>
+<p>​		set session transaction isolation level 隔离级别</p>
+<p>​			(会话级:当前黑窗口有效,关闭后再打开就失效)</p>
+<p>​	mysql的默认隔离级别是 repeatable read</p>
+<p>​	<em>隔离级别越高,执行效率越低</em></p>
+<h4 id="事务的操作">事务的操作</h4>
+<p>​	在Mysql数据库中,默认每条语句独立一个事务,执行完语句后,事务自动提交</p>
+<p>​	手动控制开启事务,从而达到多条语句处于一个事务中</p>
+<h5 id="mysql设置手动开启事务">mysql设置手动开启事务</h5>
+<p>start transaction;</p>
+<p>手动提交:commit;</p>
+<p>手动回滚:rollback;</p>
+<h5 id="结束标识">结束标识</h5>
+<p>提交或回滚(提交或回滚后需要再次开启事务)</p>
+<h5 id="回滚点">回滚点</h5>
+<ul>
+<li>savepoint 回滚点名字;</li>
+<li>rollback to 回滚点名字;</li>
+</ul>
+<h3 id="索引">索引</h3>
+<p>index 添加在数据表中某列或者某些列的检索规则</p>
+<h4 id="使用索引">使用索引:</h4>
+<p>​	优势: 详情戳(<a href="#%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96">索引优化</a>)</p>
+<ol>
+<li>
+<p><strong>提高查询效率</strong>,类似大学图书馆的书目索引</p>
+</li>
+<li>
+<p>通过索引列队数据进行排序,降低数据排序的成本,<strong>加快排序速度</strong></p>
+<blockquote>
+<p>最快的排序就是不用排序，也就是<strong>利用索引排序</strong>。把对顺序的维护<strong>分散到</strong>每一次增删改的过程中，而不是查询时再匆忙从零开始排序。</p>
+<blockquote>
+<p>班级按照身高排后,按成绩排,出班级时候也是身高排,成绩排,已经把排序在维护索引时做了</p>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<p><strong>加快分组速度</strong></p>
+</li>
+</ol>
+<p>​	弊端:</p>
+<pre><code>	1. 索引也是一张表,保存了主键与索引字段,并指向实体表的记录,所以索引列也要占用空间;
+	2. 由于增删改同时也需要维护索引,所以会造成增删改的效率降低
+	
+	字典新增几百个字，需要额外编排目录，要多占几页纸
+</code></pre>
+<p>​	结论:在适当的位置添加索引</p>
+<h4 id="添加索引的原则">添加索引的原则:</h4>
+<ol>
+<li>经常用于<strong>查询</strong>条件的字段,建议添加索引</li>
+<li>经常用于<strong>排序</strong>字段,建议添加索引</li>
+<li>经常需要<strong>连接</strong>的列上建索引,加快连接速度(外键上加索引等)</li>
+<li>辨识度大于70%以上的才建议使用索引,建立在区分度高的字段上</li>
+</ol>
+<h4 id="索引的分类">索引的分类:</h4>
+<h5 id="主键索引">主键索引:</h5>
+<p>加速查询 + 列值唯一（不可以有null）+ 表中只有一个 , 主键约束  <strong>primary key</strong></p>
+<p>添加主键,自带主键索引,一张表只能有一个主键索引</p>
+<h5 id="唯一索引">唯一索引:</h5>
+<p>加速查询 + 列值唯一（可以有null） 唯一约束  <strong>unique</strong></p>
+<p>添加唯一约束,自带唯一索引,添加了唯一索引,也就说明该字段具备唯一约束.</p>
+<h5 id="普通索引">普通索引:</h5>
+<p>添加<strong>index</strong>来实现让字段有索引,加速查询</p>
+<h5 id="组合索引">组合索引:</h5>
+<p>多列值组成一个索引 index</p>
+<p>组成索引的字段是组合的</p>
+<h4 id="索引的创建方式语法">索引的创建方式:(语法)</h4>
+<h5 id="直接创建普通唯一">直接创建（普通、唯一）</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- 创建普通索引
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">index</span> <span style="color:#960050;background-color:#1e0010">索引名</span> <span style="color:#66d9ef">on</span> <span style="color:#960050;background-color:#1e0010">表名</span>(<span style="color:#960050;background-color:#1e0010">列名</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 创建唯一索引
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">unique</span> <span style="color:#66d9ef">index</span> <span style="color:#960050;background-color:#1e0010">索引名</span> <span style="color:#66d9ef">on</span> <span style="color:#960050;background-color:#1e0010">表名</span>(<span style="color:#960050;background-color:#1e0010">列名</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 创建普通组合索引
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">index</span> <span style="color:#960050;background-color:#1e0010">索引名</span> <span style="color:#66d9ef">on</span> <span style="color:#960050;background-color:#1e0010">表名</span>(<span style="color:#960050;background-color:#1e0010">列名</span><span style="color:#ae81ff">1</span>,<span style="color:#960050;background-color:#1e0010">列名</span><span style="color:#ae81ff">2</span>....);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 创建唯一组合索引
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">unique</span> <span style="color:#66d9ef">index</span> <span style="color:#960050;background-color:#1e0010">索引名</span> <span style="color:#66d9ef">on</span> <span style="color:#960050;background-color:#1e0010">表名</span>(<span style="color:#960050;background-color:#1e0010">列名</span><span style="color:#ae81ff">1</span>,<span style="color:#960050;background-color:#1e0010">列名</span><span style="color:#ae81ff">2</span>...);
+</span></span></code></pre></div><h5 id="修改表时指定">修改表时指定</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">--</span> 添加一个主键<span style="color:#960050;background-color:#1e0010">，</span>这意味着索引值必须是唯一的<span style="color:#960050;background-color:#1e0010">，</span>且不能为NULL
+</span></span><span style="display:flex;"><span>alter table 表名 add primary <span style="color:#a6e22e">key</span><span style="color:#f92672">(</span>id<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> 添加唯一索引<span style="color:#960050;background-color:#1e0010">（</span>除了NULL外<span style="color:#960050;background-color:#1e0010">，</span>NULL可能会出现多次<span style="color:#960050;background-color:#1e0010">）</span>
+</span></span><span style="display:flex;"><span>alter table 表名 add <span style="color:#a6e22e">unique</span><span style="color:#f92672">(</span>列名<span style="color:#f92672">);</span> <span style="color:#f92672">--</span> 索引名就是列名
+</span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> 添加普通索引<span style="color:#960050;background-color:#1e0010">，</span>索引值可以出现多次<span style="color:#960050;background-color:#1e0010">。</span>
+</span></span><span style="display:flex;"><span>alter table 表名 add <span style="color:#a6e22e">index</span><span style="color:#f92672">(</span>列名<span style="color:#f92672">)</span><span style="color:#960050;background-color:#1e0010">；</span><span style="color:#f92672">--</span> 索引名就是列名
+</span></span></code></pre></div><h5 id="创建表时指定掌握">创建表时指定【掌握】</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> student(
+</span></span><span style="display:flex;"><span> id int,
+</span></span><span style="display:flex;"><span> username varchar(<span style="color:#ae81ff">32</span>),
+</span></span><span style="display:flex;"><span> age int,
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span>(id), <span style="color:#75715e">-- 主键
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#66d9ef">unique</span>(username), <span style="color:#75715e">-- 唯一
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#66d9ef">index</span>(age) <span style="color:#75715e">-- 普通
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>);
+</span></span></code></pre></div><h5 id="索引失效">索引失效:</h5>
+<p>​		1.模糊匹配时,如果条件没有一定辨识度,那么索引就会失效(%写在模糊匹配字符的前面也会失效)</p>
+<p>​		2.当多条件查询时,如果使用or关键字,只要有一个条件没有索引就会失效,必须每个条件都有索引</p>
+<p>​		3.当查询条件字段有计算时,索引会失效</p>
+<p>​		4.当条件有&lt;&gt;,is null , is not null ,!= 这些条件时,索引失效</p>
+<p>​		5.字符串不加引号,会导致mysql隐式转换,导致索引失效</p>
+<h4 id="索引的原理">索引的原理:</h4>
+<p>原理请<a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E5%90%88%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86">戳</a></p>
+<p>**索引是一种数据结构，**用于高效搜索目标数据，在MySQL中具体实现为B+树（InnoDB引擎,mysql5.6后默认引擎）</p>
+<p>​	<strong>索引 = 排序后的数据结构</strong></p>
+<p>​	mysql的索引使用的是B+Tree</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20210530120608324.png" alt="image-20210530120608324"></p>
+<h3 id="函数">函数</h3>
+<p>​	函数就是方法</p>
+<p>​	之前写的sql语句都是一条,当多条sql语句完成同一个功能时,我们称为数据库函数,或者数据库存储过程.</p>
+<p>​	根据功能的不同,区分是函数还是存储过程</p>
+<h4 id="函数特点">函数特点:</h4>
+<p>​		通用,不同业务领域都可以使用</p>
+<h4 id="存储过程的特点">存储过程的特点:</h4>
+<p>​		不通用,用于特定业务领域.代码根据不同需求场景改变.</p>
+<h5 id="细节">细节:</h5>
+<p>​	函数和存储过程都采用了大量的数据库方言,移植性差,不通用(互联网领域用的少)</p>
+<h5 id="说明">说明:</h5>
+<p>​	数据库中没有内置的存储过程,但有内置函数,在实际开发中可能会用到内置的函数</p>
+<h4 id="mysql数据库函数分类">Mysql数据库函数分类:</h4>
+<p>​	字符串函数,日期函数,数学函数,高级函数(if() ifnull()  case  when  then  and)&rsquo;</p>
+<h5 id="字符串函数">字符串函数</h5>
+<pre tabindex="0"><code>1.  函数：CONCAT(s1,s2...sn)
+	描述：字符串 s1,s2 等多个字符串合并为一个字符串
+	实例：SELECT CONCAT(&#34;a&#34;, &#34;b&#34;, &#34;c&#34;, &#34;d&#34;);
+2.  函数：CHAR_LENGTH(str)
+	描述：返回字符串 str 的字符数
+	实例：SELECT CHAR_LENGTH(&#34;abcd&#34;);
+3.  函数：LENGTH(str)  返回字符串 s 的字节数
+	描述：中文在utf8占3个字节,在gbk下占2个字节
+	实例：SELECT LENGTH(&#34;abcd&#34;) ;
+4.  函数：UCASE(s) | UPPER(s)
+	描述：将字符串转换为大写
+	实例：SELECT UCASE(&#34;itcast&#34;);
+5.  函数：LCASE(s) | LOWER(s)
+	描述：将字符串转换为小写
+	实例：SELECT LCASE(&#34;ITCAST&#34;);
+6.  函数：LOCATE(s1,s)
+	描述：从字符串 s 中获取 s1 的开始位置(从1开始)
+	实例：SELECT LOCATE(&#39;he&#39;,&#39;abcd&#39;);
+7.  函数：TRIM(str) | LTRIM(str) | RTRIM(str)
+	描述：字符串去空格
+	实例：SELECT TRIM(&#34;  abcd&#34;);
+8.  函数：REPLACE(s,s1,s2)
+	描述：将字符串 s2 替代字符串 s 中的字符串 s1
+	实例：SELECT REPLACE(&#39;abc&#39;,&#39;a&#39;,&#39;x&#39;);
+9.  函数：SUBSTR(s, start, length)
+	描述：从字符串 s 的 start 位置截取长度为 length 的子字符串
+	实例：SELECT SUBSTR(&#34;itcast&#34;, 2, 3);
+10. 函数：STRCMP(str1,str2)
+	描述：比较字符串大小,左大于右时返回1，	
+	左等于右时返回0，左小于于右时返回-1，
+	实例：SELECT STRCMP(&#34;a&#34;,&#34;b&#34;);
+	
+	
+	-- 字符串转为 日期
+	select cast(&#39;1999-1-1&#39; as date);
+	-- 字符串转为 整型
+	select cast(&#39;19&#39; as SIGNED);
+</code></pre><h5 id="日期函数">日期函数</h5>
+<pre tabindex="0"><code>1.  函数：NOW() | CURDATE() | CURTIME()
+	描述：获取系统当前日期时间、日期、时间
+	实例：SELECT NOW();
+2.  函数：YEAR(DATE) | MONTH(DATE) | DAY(DATE)
+	描述：从日期中选择出年、月、日
+	实例：SELECT YEAR(NOW()); 
+3.  函数：LAST_DAY(DATE)
+	描述：返回月份的最后一天
+	实例：SELECT LAST_DAY(NOW());
+4.  函数：ADDDATE(DATE,n) | SUBDATE(DATE,n)
+	描述：计算起始日期 DATE 加（减） n 天的日期
+	实例：SELECT ADDDATE(NOW(),10);
+5.  函数：QUARTER(DATE)
+	描述：返回日期 DATE 是第几季节，返回 1 到 4
+	实例：SELECT QUARTER(NOW());
+6.  函数：DATEDIFF(d1,d2)
+	描述：计算日期 d1-&gt;d2 之间相隔的天数
+	实例：SELECT DATEDIFF(&#39;2019-08-01&#39;,&#39;2019-07-01&#39;);
+7.  函数：DATE_FORMAT(d,f)
+	描述：按表达式 f的要求显示日期 d
+	实例：SELECT DATE_FORMAT(NOW(),&#39;%Y-%m-%d&#39;);
+</code></pre><h5 id="数学函数">数学函数</h5>
+<pre tabindex="0"><code>1.  函数：ABS(x)
+	描述：返回 x 的绝对值　　
+	实例：SELECT ABS(-1);
+2.  函数：CEIL(x) | FLOOR(x)
+	描述：向上（下）取整
+	实例：SELECT CEIL(1.5);
+3.  函数：MOD(x,y)
+	描述：返回x mod y的结果，取余
+	实例：SELECT MOD(5,4);
+4.  函数：RAND()
+	描述：返回 0 到 1 的随机数
+	实例：SELECT RAND();
+5.  函数：ROUND(x)  round(x,y)  保留x的y位小数且四舍五入
+	描述：四舍五入
+	实例：SELECT ROUND(1.23456);
+6.  函数：TRUNCATE(x,y) 舍尾法
+	描述：返回数值 x 保留到小数点后 y 位的值
+	实例：SELECT TRUNCATE(1.23456,3);
+</code></pre><h5 id="mysql高级函数">Mysql高级函数</h5>
+<pre tabindex="0"><code>在查询代码的过程中，可能我们需要对查询的结果进行判断。就需要使用到case when then
+-- 语法 
+SELECT 
+    CASE [字段,值] 
+           WHEN   判断条件1    THEN    希望的到的值1
+           WHEN   判断条件2    THEN    希望的到的值2
+           ELSE 前面条件都没有满足情况下得到的值 
+      END
+FROM  table_name;
+</code></pre><h3 id="数据结构与数据库结合相关知识">数据结构与数据库结合相关知识</h3>
+<h4 id="二叉查找树">二叉查找树</h4>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1589358394072-a5d5f642-25e5-4d01-ba52-ba7251609d4a.png" alt="image.png"></p>
+<blockquote>
+<p><strong>在一颗树中找到目标数据所需的比较次数 = 目标数据所在的层级</strong></p>
+<p>但是按顺序输入时,它会变成一个线性结构,因为右边的节点总是比根节点大,如果是12345,根节点是1,他的右叶子结点是2,2的右叶子结点是3 &hellip;.</p>
+</blockquote>
+<h4 id="二叉平衡树">二叉平衡树</h4>
+<p>可以自动调整节点，好让“树的层级”不至于太深</p>
+<p>从小到大一直依次放入数据,会不停&quot;左旋&quot;,保证层级</p>
+<p><a href="https://www.cs.usfca.edu/~galles/visualization/AVLtree.html">动画演示</a></p>
+<p>保证查找速度的前提是<strong>数据必须全部在内存中</strong>,显然对于大量数据是不明智的,要涉及磁盘-内存的io操作</p>
+<blockquote>
+<p>本身数据是存在磁盘中,需要使用时从磁盘载入内存,其中就设计磁盘内存的io操作</p>
+<blockquote>
+<p>磁盘是原料仓库,内存是生产车间,cpu是生产工人</p>
+</blockquote>
+</blockquote>
+<p>可以这样组织数据库:</p>
+<ul>
+<li>
+<p>把数据存在磁盘中</p>
+</li>
+<li>
+<p>数据按树结构组织</p>
+</li>
+<li>
+<p>查询时分块读取数据并比较，持续进行磁盘IO读取节点，直到找到目标数据(但是频繁进行磁盘IO(磁盘IO耗时),效率低下)</p>
+</li>
+</ul>
+<blockquote>
+<p>总结影响磁盘IO的关键就是<strong>树的层级(深度)</strong>,数据在树的第二层,只需比较到数据直接返回,不用磁盘io,但如果数据在32层,就要进行32次磁盘io</p>
+</blockquote>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1589361951577-71cfd4b1-bfd8-44cc-a968-5de2d821fe2b.png" alt="image.png"></p>
+<h4 id="b树">B树</h4>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1589362752238-4daa5676-b2c3-419f-9016-a3cf84bb057f.png" alt="image.png"></p>
+<p>B树有个“阶”的概念，比如“三叉平衡”的B树其实叫“3阶B树”</p>
+<p>“N阶B树”<strong>每个节点可以存N-1个数据</strong>（二叉平衡树每个节点只存1个数据），且每个节点至多可以连接N个子节点。</p>
+<p><strong>每次加载一个节点时都可以从磁盘带出更多条数据，从而减少磁盘IO的次数</strong>,</p>
+<p>典型<strong>空间换时间</strong></p>
+<h5 id="问题">问题</h5>
+<p>如何通过B树组织数据库的表数据</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1589370021227-2ce244b2-e5de-4aeb-8a57-5cfb81109d80.png" alt="image.png"></p>
+<h4 id="heading"></h4>
+<p>MySQL有&quot;<strong>页</strong>&ldquo;的概念,大小是16k,可以理解MySQL中的&quot;页&quot;就是B树上的一个个节点.</p>
+<p>假设表中的一行数据大概占1kb(很大了,一般15-20字节),因为节点最大size是16K,所以每个节点最多只能存16行数据.</p>
+<p><a href="#%E4%BA%8C%E5%8F%89%E5%B9%B3%E8%A1%A1%E6%A0%91">二叉树</a>&ndash;&gt;<a href="#B%E6%A0%91">B树</a> //因为B树在一个节点能存更多数据,但显然比二叉树多15行数据也没有多大的改变,目的是要让一个节点<strong>尽可能塞入更多数据以减少树的深度</strong></p>
+<h4 id="b树mysql索引实现方式">B+树(mysql索引实现方式)</h4>
+<p>把每一行数据的主键存进去</p>
+<p>所谓B+树<strong>把原先B树中分散在各个节点的数据都“赶到”最底层的叶子节点，非叶子节点只存储主键-addr形式的数据</strong></p>
+<p>单节点存16KB,一个主键8字节(bigint按最大算)+6字节(指针addr)=14字节</p>
+<p>16*1024/14=1170个(主键和指针)</p>
+<p><strong>单节点存的数据数量增多,对应树的深度减少,磁盘和内存的io次数也就减少,大大提高了效率</strong></p>
+<h5 id="imagepnghttpsossimguposs-cn-beijingaliyuncscomimg1589448311743-b494fa66-02d0-43b8-ab9f-f920caec8af2png"><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1589448311743-b494fa66-02d0-43b8-ab9f-f920caec8af2.png" alt="image.png"></h5>
+<h5 id="b树特征">B+树特征</h5>
+<ul>
+<li>非叶子节点不存数据</li>
+<li>叶子节点数据用链表相连(叶子节点是有序链表,非常便于做范围查询)</li>
+</ul>
+<h5 id="问题-1">问题</h5>
+<p>B+树如何获取数据?</p>
+<p>之前B数的节点存了完整的数据,找到第二次某节点可以直接返回,但是B+树只存了主键与addr,就算匹配到了,还得继续深入找到叶子节点读取完整的数据.</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1589374780467-c8dbebf7-eb2e-418b-8536-cc90aea27b37.png" alt="image.png"></p>
+<p>B树和B+树的区别</p>
+<ul>
+<li>
+<p>B树的节点都会存储整行数据，占用空间大存储addr少，而B+树的非叶子节点只存储主键，能容纳更多addr</p>
+</li>
+<li>
+<p>由于非叶子节点能容纳更多addr，那么同一个节点能指向更多下级节点，所以相同数据量时，B+树通常更加“矮”，IO更少</p>
+</li>
+<li>
+<p>B树的查询效率是不稳定的，最好情况是根节点，最差情况是叶子节点，而B+树是稳定的，每次都要查询到叶子节点</p>
+<blockquote>
+<p>相同数据量的情况下，B+树远远矮于B树。比如B树的查询IO次数是1~100，而B+树恒定为3,优选B+树!</p>
+</blockquote>
+</li>
+<li>
+<p>B+树的叶子节点是有序列表，非常便于范围查询</p>
+</li>
+</ul>
+<h3 id="sql优化">SQL优化</h3>
+<p>金句:SQL优化本质是减少磁盘io次数</p>
+<h4 id="数据三范式">数据三范式</h4>
+<h5 id="第一范式--原子性">第一范式  原子性</h5>
+<p>所有列不可再分</p>
+<blockquote>
+<p>不能把&quot;电话号,邮箱,QQ&quot;存到一个contact列里,应该拆分成phone,email,qqnumber三个列</p>
+</blockquote>
+<h5 id="第二范式-唯一性">第二范式 唯一性</h5>
+<p>必须存在业务主键,非主键字段应依赖于<strong>全部</strong>业务主键(可能存在复合主键)</p>
+<p>每张表最好都设定主键,并且最好和业务无关,比如自增id</p>
+<p>在一个数据库表中，<strong>一个表中只能说一件事</strong>，不可以把多种数据保存在同一张数据库表中(不能把订单编号和商品编号作为联合主键来设计订单信息表,应该分开来订单对应订单编号,商品各种信息对应商品编号,新创建一个订单项目表来存订单编号和商品编号)</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/2012040114063976.png" alt="img"></p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/2012040114082156.png" alt="img"></p>
+<h5 id="第三范式-直接性">第三范式 直接性</h5>
+<p>确保每列都和主键列直接相关,而不能间接相关</p>
+<p>订单数据表,把客户id作为外键和订单表建立相应关系,而不可以把客户的其他信息(姓名,联系方式等)</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/2012040114105477.png" alt="img"></p>
+<h5 id="总结">总结</h5>
+<p>一般前两个范式都会遵守,第三个范式会被打破,<strong>越遵从范式化设计，表的拆分越细致，查询时需要关联的表就越多</strong>.</p>
+<h4 id="优化sql1反三范式">优化sql1:反三范式</h4>
+<p>例如</p>
+<ol>
+<li>数量*单价 可以得到金额 ,但是单独添加金额这个冗余的字段,可以减少计算提高查询统计的速度</li>
+</ol>
+<blockquote>
+<p>降低范式就是增加字段，允许冗余，达到以空间换时间的目的</p>
+</blockquote>
+<ol start="2">
+<li>订单表里存商品价格,而价格应该放在商品表中,这样做的目的是当商品打折或者降价时,订单表的商品价格不应该随着商品表的价格改变而改变,应该维持订单价格,看似违反第三范式,其实这样做就不用存储某一时间段商品的价格了.</li>
+</ol>
+<h4 id="优化sql2数据类型选择">优化sql2:数据类型选择</h4>
+<h5 id="1业务允许尽量使用unsigned">1.业务允许,尽量使用unsigned</h5>
+<table>
+<thead>
+<tr>
+<th><strong>数据类型</strong></th>
+<th><strong>占据空间</strong></th>
+<th><strong>范围（有符号）</strong></th>
+<th><strong>范围（无符号）</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tinyint</td>
+<td>1 个字节</td>
+<td>-2^7 ~ 2^7-1</td>
+<td>0 - 255</td>
+<td>小整数值</td>
+</tr>
+<tr>
+<td>smallint</td>
+<td>2 个字节</td>
+<td>-2^15 ~ 2^15-1</td>
+<td>0 - 65535</td>
+<td>大整数值</td>
+</tr>
+<tr>
+<td>mediumint</td>
+<td>3 个字节</td>
+<td>-2^23 ~ 2^23-1</td>
+<td>0 - 16777215</td>
+<td>大整数值</td>
+</tr>
+<tr>
+<td>int</td>
+<td>4 个字节</td>
+<td>-2^31 ~ 2^31-1</td>
+<td>0 - 4294967295</td>
+<td>大整数值</td>
+</tr>
+<tr>
+<td>bigint</td>
+<td>8 个字节</td>
+<td>-2^63 ~ 2^63-1</td>
+<td>0 - 18446744073709551615</td>
+<td>极大整数值</td>
+</tr>
+</tbody>
+</table>
+<p>所谓unsigned就是无符号,tinyint正常取值是-128-127,但是业务很少用到负数,就可以用unsigned让正向范围翻倍 0-255;</p>
+<h5 id="2varchar和char的比较">2.varchar和char的比较</h5>
+<ul>
+<li>
+<p>char长度固定,不考虑边界,<strong>读写效率高于varchar</strong>,适合存储长度固定,频繁读写的数据,如身份证号,手机号</p>
+</li>
+<li>
+<p>varchar 长度不固定,可以通过varchar(10)指定上限,适合存储长度波动,更新不频繁的数据,如自我介绍等</p>
+<blockquote>
+<p>char的存储长度不够灵活,但是varchar需要用1-2个字节来存储当前值的实际长度,更新会导致重新计算</p>
+<p>金句: 没有最完美的类型,只有最适合的类型</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="3小数类型">3.小数类型</h5>
+<table>
+<thead>
+<tr>
+<th><strong>数据类型</strong></th>
+<th><strong>占据空间</strong></th>
+<th><strong>是够精确</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>float</td>
+<td>4个字节</td>
+<td>非精确</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8 个字节</td>
+<td>非精确</td>
+</tr>
+<tr>
+<td>decimal</td>
+<td>每4个字节存9个数字，小数点占一个字节</td>
+<td>精确</td>
+</tr>
+</tbody>
+</table>
+<p>decimal效率不如float和double</p>
+<h5 id="4时间类型">4.时间类型</h5>
+<table>
+<thead>
+<tr>
+<th><strong>数据类型</strong></th>
+<th><strong>占据空间</strong></th>
+<th><strong>取值范围</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>date</td>
+<td>3个字节</td>
+<td>1000-01-01 ~ 9999-12-31</td>
+</tr>
+<tr>
+<td>time</td>
+<td>3~6个字节</td>
+<td>-838:59:59 ~ 838:59:59</td>
+</tr>
+<tr>
+<td>datetime</td>
+<td>5~8个字节</td>
+<td>1000-01-01 00:00:00 ~ 9999-12-31 23:59:59</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>4~7个字节</td>
+<td>1970-01-01 00:00:01 ~ 2038-01-19 03:14:07</td>
+</tr>
+</tbody>
+</table>
+<p>具体跟着公司走,可能还会用Long存秒数</p>
+<h5 id="5尽量避免null">5.尽量避免null</h5>
+<p>使用NOT NULL,除非业务要求可能是null</p>
+<blockquote>
+<p>1、null长度不为0，占用空间</p>
+<p>2、null参与计算，且运算时返回值为null，null与任何值比较返回值为null</p>
+<p>3、null对索引有影响</p>
+<p>4、null值参与排序（asc null排在最后，desc null排在最前）</p>
+</blockquote>
+<p>NOT NULL：一定要传递值，且不能为NULL，否则报错</p>
+<p>DEFAULT &lsquo;xx&rsquo;：传不传都可以，不传就使用	值xx，<strong>可以传NULL</strong></p>
+<p>NOT NULL DEFAULT &lsquo;xx&rsquo;：传不传都可以，不传就使用默认值xx，<strong>不能传NULL</strong></p>
+<h4 id="语句书写顺序">语句书写顺序</h4>
+<p>SELECT &hellip; FROM table WHERE &hellip; GROUP BY &hellip; HAVING &hellip; ORDER BY &hellip; LIMIT &hellip;</p>
+<blockquote>
+<p>除了SELECT，后面几个顺序可以记忆为：温哥华OL，意思是温哥华白领。</p>
+</blockquote>
+<h4 id="索引优化">索引优化</h4>
+<blockquote>
+<p>聚簇索引:主键索引,<strong>叶子节点是表的数据,不需要回表</strong>,也是,存的是索引+数据</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1589586538060-89e3781c-22ed-4b16-a734-d5466af2d6aa.png" alt="image.png"></p>
+<p>非聚簇索引:辅助索引(唯一索引,普通索引),叶子节点是主键,必要时要根据主键回表查询,<strong>回表会增加磁盘io次数</strong>,除了主键索引其他都是辅助索引</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1608956710604-75cdbc20-a59e-473f-9e98-b963ac3cd49d.png" alt="图片.png"></p>
+</blockquote>
+<hr>
+<blockquote>
+<p>需要根据username搜索订单,且要得到用户的年龄,如果给username添加一个普通索引后,叶子节点存储id,非叶子节点是username,想要得到user_age,还需要在回表去找对应的user_age.</p>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1610162572296-97295d9c-ab7c-444b-a99a-6c8ea8f106eb.png" alt="图片.png"></p>
+</blockquote>
+<p>在业务中用<strong>索引覆盖</strong>,避免回表</p>
+<blockquote>
+<p>给user_name和user_age加一个组合索引,<strong>当辅助索引上的字段完全满足本次查询的列时，就是所谓的索引覆盖</strong>,也正是避免用select* from 会提高效率__(不用*提高索引覆盖的几率)</p>
+</blockquote>
+<p>理解:在非主键索引上(加一个联合索引)查询就可以得到所需要的所有字段，不需要回表(减少了磁盘io操作)，即为<strong>索引覆盖</strong>,在查询时不用select * 提高索引覆盖的几率,自然效率会上升</p>
+<blockquote>
+<p>使用<strong>Explain</strong>分析是否 走索引,加在select前</p>
+</blockquote>
+<h5 id="最左匹配原则">最左匹配原则</h5>
+<h6 id="where">where</h6>
+<p>为什么对于组合索引index(name, age)，条件WHERE age=25无法利用索引</p>
+<p>第一个要比较是name不是age,不满足最左匹配原则</p>
+<blockquote>
+<p>教室是按身高和成绩排,非要用成绩去找,在教室里面是查不到的,因为前提是身高!</p>
+<p>数据库直接语法匹配,不满足最左匹配,直接放弃索引走全盘扫描</p>
+</blockquote>
+<h6 id="order-by">order by</h6>
+<p>在排序时字段顺序不一致,<code>ORDER BY age, name（字段顺序不一致</code></p>
+<p>字段排序方式不同步，DESC和ASC混着来<code>ORDER BY name DESC, age ASC</code></p>
+<p>都会导致不走索引,重排序</p>
+<h5 id="联合索引使用场景">联合索引使用场景</h5>
+<ul>
+<li>
+<p><strong>多条件查询</strong>，提高利用率 <code>where a,b,c  就可以 index(a,b,c)</code> where不管顺序,但不能缺少字段</p>
+</li>
+<li>
+<p><strong>避免回表</strong>,但实际回表还是会多一些</p>
+</li>
+<li>
+<p><strong>经常要排序</strong>,添加联合索引,索引在维护时候已经是排序过的,根据索引去排序会快</p>
+</li>
+<li>
+<p><strong>count统计</strong></p>
+<p><code>SELECT COUNT(*) FROM t_user_follow WHERE uid=123 and platform=6 and follow_status=1;</code></p>
+<p>此时最好建立联合索引index(uid, platform, follow_status)，速度会稍微快一些。</p>
+</li>
+<li></li>
+</ul>
+<h3 id="jdbc">JDBC</h3>
+<h4 id="jdbc基本概述">JDBC基本概述</h4>
+<p>​	JDBC：Java DataBase Connectivty
+​	它是sun公司推出的一套java程序操作数据库的规范。是JavaEE规范的其中之一。</p>
+<h4 id="jdbc快速入门练">JDBC快速入门（练）</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>步骤<span style="color:#960050;background-color:#1e0010">：</span>
+</span></span><span style="display:flex;"><span>	1<span style="color:#f92672">.</span><span style="color:#a6e22e">注册驱动</span>
+</span></span><span style="display:flex;"><span>	2<span style="color:#f92672">.</span><span style="color:#a6e22e">获取连接</span>
+</span></span><span style="display:flex;"><span>	3<span style="color:#f92672">.</span><span style="color:#a6e22e">获取操作对象</span>
+</span></span><span style="display:flex;"><span>	4<span style="color:#f92672">.</span><span style="color:#a6e22e">执行SQL语句</span><span style="color:#960050;background-color:#1e0010">，</span>获取结果
+</span></span><span style="display:flex;"><span>	5<span style="color:#f92672">.</span><span style="color:#a6e22e">处理结果</span><span style="color:#960050;background-color:#1e0010">（</span>增删改得到的是<span style="color:#960050;background-color:#1e0010">，</span>影响数据库的行数<span style="color:#960050;background-color:#1e0010">。</span>查询的得到的是<span style="color:#960050;background-color:#1e0010">，</span>结果集<span style="color:#960050;background-color:#1e0010">）</span>
+</span></span><span style="display:flex;"><span>	6<span style="color:#f92672">.</span><span style="color:#a6e22e">释放资源</span><span style="color:#960050;background-color:#1e0010">（</span>释放顺序是<span style="color:#960050;background-color:#1e0010">：</span>后获取的先关闭<span style="color:#960050;background-color:#1e0010">）</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JdbcInsert</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> SQLException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;insert into tbl_user(username,password,money) values(&#39;jack&#39;,&#39;1234&#39;,1000);&#34;</span><span style="color:#f92672">;</span><span style="color:#75715e">//DML
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//1.注册驱动
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        DriverManager<span style="color:#f92672">.</span><span style="color:#a6e22e">registerDriver</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Driver<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//2.获得连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        String url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/day15&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">///////////// 协议  子协议  主机      端口   数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        String username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        String password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        Connection connection <span style="color:#f92672">=</span> DriverManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection</span><span style="color:#f92672">(</span>url<span style="color:#f92672">,</span> username<span style="color:#f92672">,</span> password<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//3.获得语句执行者对象(帮我们执行sql语句的)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Statement statement <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createStatement</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//4.执行sql
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> statement<span style="color:#f92672">.</span><span style="color:#a6e22e">executeUpdate</span><span style="color:#f92672">(</span>sql<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//5.处理返回结果
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;影响记录行数为:&#34;</span><span style="color:#f92672">+</span>count<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//6.释放资源
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        statement<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JdbcSelect</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> SQLException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        String sql <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;select * from tbl_user;&#34;</span><span style="color:#f92672">;</span><span style="color:#75715e">//DQL
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//1.注册驱动
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        DriverManager<span style="color:#f92672">.</span><span style="color:#a6e22e">registerDriver</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Driver<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//2.获得连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        String url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/day15&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">///////////// 协议  子协议  主机      端口   数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        String username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        String password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        Connection connection <span style="color:#f92672">=</span> DriverManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection</span><span style="color:#f92672">(</span>url<span style="color:#f92672">,</span> username<span style="color:#f92672">,</span> password<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//3.获得语句执行者对象(帮我们执行sql语句的)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Statement statement <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createStatement</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//4.执行sql,获取结果集
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ResultSet resultSet <span style="color:#f92672">=</span> statement<span style="color:#f92672">.</span><span style="color:#a6e22e">executeQuery</span><span style="color:#f92672">(</span>sql<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//5.输出结果
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()){</span>
+</span></span><span style="display:flex;"><span>            Integer id <span style="color:#f92672">=</span> resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            String un <span style="color:#f92672">=</span> resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span>2<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            String pw <span style="color:#f92672">=</span> resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span>3<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            Integer mn <span style="color:#f92672">=</span> resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span>4<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            Integer id2 <span style="color:#f92672">=</span> resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            String un2 <span style="color:#f92672">=</span> resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            String pw2 <span style="color:#f92672">=</span> resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            Integer mn2 <span style="color:#f92672">=</span> resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;money&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>id<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">+</span>un<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">+</span>pw<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">+</span>mn<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>id2<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">+</span>un2<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">+</span>pw2<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">+</span>mn2<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//6.释放资源
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        resultSet<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        statement<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h4 id="常用对象说明">常用对象说明</h4>
+<p>他们都是JDK API中的类和接口。在java.sql包下</p>
+<h5 id="drivermanager">DriverManager：</h5>
+<pre><code>DriverManager：
+	它是jdbc的管理对象，也是工具类。它里面的方法都是静态的。
+	常用方法：
+		注册驱动：registerDriver(java.sql.Driver接口的实现类);
+		获取连接：
+			getConnection(String url);
+			getConnection(String url,Properties properties);
+			getConnection(String url,String username,String password);
+
+			通常情况下，我们会采用第三种方式，因为看的清楚。
+			url：连接数据库的url
+			     格式是固定的
+				    jdbc:mysql://主机:端口/数据库名称?参数名=参数值&amp;参数名=参数值....
+			     通常的写法：
+				    jdbc:mysql://localhost:3306/db_name
+			
+			如果我们使用了参数，建议大家使用第二种方式。参数的内容可以不拼接在url后面，而是写在properties里面
+			
+			username：指的就是数据库用户名
+			passwrod：指的就是数据库密码
+			他们两个用properties的方式时，也是写在properties里的
+
+			连接的参数有：
+				在mysql.chm的26章节中，有一个Connector/J
+</code></pre>
+<h5 id="connection">Connection：</h5>
+<pre tabindex="0"><code>Connection：
+		它是jdbc操作的核心对象。它可以获取操作数据库的对象。操作事务也由它来完成的。
+		常用方法：
+			获取操作对象：Statement st = createStatement();
+			获取预处理对象：PreparedStatement pstm =  prepareStatement(String sql);
+			设置事务的手动控制：setAutoCommit(boolean isAuto);
+			提交事务：commit();
+			回滚事务：rollback();
+			释放资源：close()；
+</code></pre><h5 id="statement">Statement:</h5>
+<pre tabindex="0"><code>Statement：
+		它是jdbc的操作对象。它可以执行DML和DQL，以及没有任何结果返回的DDL语句。
+		常用方法：
+			用于执行增删改方法的：int res = executeUpdate(String sql);
+			用于执行查询方法的：ResultSet rs = executeQuery(String sql);
+			它可以执行DML和DQL：boolean bl = execute(String sql);
+					   返回值含义：
+						是否有结果集。
+						true：有结果集，执行的是DQL语句
+						false：没有结果集，执行的是DML语句
+			释放资源：close()；
+</code></pre><h5 id="resultset">ResultSet：</h5>
+<pre tabindex="0"><code>ResultSet：
+		它是jdbc的结果集对象。就是把返回结果封装成了一个内存对象，对象的形式就是一个二维表格。
+		我们要想获取数据，就需要遍历这个结果集对象。
+		常用方法：
+			让结果集游标向下移动一个：next();
+			让结果集游标向上移动一个：previous();
+			获取指定列的数据内容：getXXX(int columnIndex | String columnLabel);
+					     XXX的含义就是数据类型。例如：getString(),getInt(),getObject()等等。
+					     columnIndex：它是从1开始的。
+			释放资源：close()；
+</code></pre><h3 id="sql注入的解决">SQL注入的解决</h3>
+<p>PreparedStatement 预编译对象能解决PreparedStatement</p>
+<h3 id="数据库连接池">数据库连接池</h3>
+<p>DBCP  C3P0 淘汰, 历史产品</p>
+<p>HikariCP:日本产品(快)  作为了流行技术springboot默认数据源(DataSource)</p>
+<p>Druid (德鲁伊):阿里产品, 提供其他组件多 稳定  速度有一定的保证</p>
+<h3 id="mybatis框架">Mybatis框架</h3>
+<p>具有通用性的繁琐代码封装起来,让使用者不用关心封装起来的细节,提高开发效率,降低开发难度,统一开发标准,这个被封装起来的代码,就是框架,半成品软件,可以根据这个软件继续进行开发,完成个性化需求</p>
+<h4 id="主要思想">主要思想</h4>
+<p>将程序中的大量 SQL 语句剥离出来，使用 XML 文件或注解的方式实现 SQL 的灵活配置，将 SQL 语句与程序代码分离，在不修改程序代码的情况下，直接在配置文件中修改 SQL 语句。</p>
+<h4 id="orm映射">ORM映射()</h4>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20210502084141324.png" alt="image-20210502084141324"></p>
+<h4 id="前期准备">前期准备</h4>
+<ol>
+<li>
+<p>导入jar包 mybatis 的jar包和数据库的驱动包</p>
+</li>
+<li>
+<p>导入数据库</p>
+</li>
+<li>
+<p>编写实体类</p>
+</li>
+<li>
+<p>编写持久层接口(接口可以用来动态代理实现CRUD)</p>
+<blockquote>
+<p>动态代理是所有框架的底层</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>sqlSession<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>UserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span> <span style="color:#75715e">//或者userdao 给接口生成映射的代理对象-实现类
+</span></span></span></code></pre></div></blockquote>
+</li>
+</ol>
+<h4 id="编码步骤">编码步骤</h4>
+<ol>
+<li>
+<p>编写核心配置文件SqlMapConfig.xml</p>
+<blockquote>
+<p>核心配置文件主要用于配置数据库连接和 MyBatis 运行时所需的各种特性,文件中配置了数据库环境和映射文件的位置</p>
+</blockquote>
+</li>
+<li>
+<p>映射文件UserDao.xml / WebsiteMapper.xml(在这里面配置sql标签之类的)</p>
+<blockquote>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20211008155235682.png" alt="image-20211008155235682"></p>
+</blockquote>
+</li>
+</ol>
+<h5 id="复杂查询等">复杂查询等</h5>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20211008165044158.png" alt="image-20211008165044158"></p>
+<h5 id="模糊查询">模糊查询</h5>
+<p><img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/image-20211008165253428.png" alt="image-20211008165253428"></p>
+<h4 id="动态sqlimghttpsossimguposs-cn-beijingaliyuncscomimg1001990-20180420091927414-873899959png">动态SQL<img src="https://ossimgup.oss-cn-beijing.aliyuncs.com/img/1001990-20180420091927414-873899959.png" alt="img"></h4>
+<ol>
+<li><code>&lt;if&gt;</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;findByCondition&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;com.gorilla.domain.QueryPojo&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;com.gorilla.domain.User&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        select * from tbl_user where 1=1
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;username!=null and username!=&#39;&#39;&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            and username=#{username}
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/if&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;id!=null and id !=0&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            and id &gt;#{id}
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/if&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/select&gt;</span>
+</span></span></code></pre></div><ol start="2">
+<li><code>&lt;where&gt;</code></li>
+</ol>
+<p>一般where和if 一起使用,动态拼接查询条件</p>
+<ol start="3">
+<li><code>&lt;set&gt;</code></li>
+</ol>
+<p>匹配条件后才会对这个字段进行更新</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span> <span style="color:#f92672">&lt;update</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;updateUser&#34;</span> <span style="color:#a6e22e">parameterType=</span><span style="color:#e6db74">&#34;com.gorilla.domain.User&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        update  tbl_user
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;set&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;username!=null and username!=&#39;&#39;&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                    username=#{username},
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/if&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/set&gt;</span>
+</span></span><span style="display:flex;"><span>     where id=#{id}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/update&gt;</span>
+</span></span></code></pre></div><p>4.<code>&lt;foreach&gt;</code></p>
+<p>集合对象进行遍历,然后把每一项的内容 作为参数传到 sql 语句中</p>
+<p>5.<code>&lt;include&gt;</code></p>
+<p>抽取重复公共代码</p>
+<h4 id="延迟加载策略">延迟加载																																						策略</h4>
+<p>按需加载,需要用到数据的时候才进行加载,不需要用到就不加载(懒加载)</p>
+<h4 id="替换为注解开发">替换为注解开发</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">dao层写    
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">property 实体类   cloumn 数据库的列 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">one 一对一 many 一对多
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//查询所有的账户
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@Select</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from tbl_account &#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Results</span><span style="color:#f92672">(</span>value<span style="color:#f92672">={</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span><span style="color:#f92672">(</span>property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#f92672">,</span> column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#f92672">,</span> id <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span><span style="color:#f92672">(</span>property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#f92672">,</span> column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span><span style="color:#f92672">(</span>property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#f92672">,</span> column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span><span style="color:#f92672">(</span>property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;gender&#34;</span> <span style="color:#f92672">,</span> column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;gender&#34;</span> <span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span><span style="color:#f92672">(</span>property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;email&#34;</span> <span style="color:#f92672">,</span> column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;email&#34;</span> <span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span><span style="color:#f92672">(</span>property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;telephone&#34;</span> <span style="color:#f92672">,</span> column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;telephone&#34;</span> <span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span><span style="color:#f92672">(</span>property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;user&#34;</span> <span style="color:#f92672">,</span>javaType <span style="color:#f92672">=</span> User<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span> <span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>            one <span style="color:#f92672">=</span> <span style="color:#a6e22e">@One</span><span style="color:#f92672">(</span>select <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;com.gorilla.dao.UserDao.findUserByUid&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">,</span>column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;uid&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">})</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Account<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">findAll</span><span style="color:#f92672">();</span>
+</span></span></code></pre></div><h3 id="heading-1"></h3>
+<h3 id="nosql">NoSQL</h3>
+<p>NoSQL = Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。</p>
+<h4 id="发展">发展</h4>
+<p>互联网2.0兴起,非关系型数据库成了一个非常热门的新领域; 传统关系型数据库在超大规模高并发的SNS类型的web2.0纯动态网站已经力不从心.</p>
+<h5 id="难题">难题</h5>
+<blockquote>
+<p>1.<strong>High performance对数据库高并发读写的需求</strong>,web2.0,网站要根据用户个性化信息来实时生成动态页面和提供动态信息,往往要达到每秒上万次读写请求,上万次SQL<strong>写</strong>数据硬盘IO就无法承受,如:点击次数,投票计数</p>
+<p>2.<strong>Huge Storage 对海量数据的高效率存储和访问的需求</strong>,类似Facebook,twitter这样的SNS(Social Network Service，社交网络服务)网站,每天海量数据动态,要求高效率存储访问</p>
+<p>3.<strong>High Scalability &amp;&amp; High Availability- 对数据库的高可扩展性和高可用性的需求</strong></p>
+<p>当用户量和访问量与日俱增,数据库没办法像web server 和 app server 一样通过添加硬件和服务节点来扩展性能,并且要不间断24小时工作,要扩展往往要停机维护和数据迁移.</p>
+</blockquote>
+<h4 id="键值key-value存储数据库">键值(Key-Value)存储数据库</h4>
+<blockquote>
+<p>相关产品： Tokyo Cabinet/Tyrant、Redis、Voldemort、Berkeley DB</p>
+<p>典型应用： 内容缓存，主要用于处理大量数据的高访问负载。</p>
+<p>数据模型： 一系列键值对</p>
+<p>优势： 快速查询</p>
+<p>劣势： 存储的数据缺少结构化</p>
+</blockquote>
+<h4 id="列存储数据库">列存储数据库</h4>
+<blockquote>
+<p>相关产品：Cassandra, HBase, Riak</p>
+<p>典型应用：分布式的文件系统</p>
+<p>数据模型：以列簇式存储，将同一列数据存在一起</p>
+<p>优势：查找速度快，可扩展性强，更容易进行分布式扩展</p>
+<p>劣势：功能相对局限</p>
+</blockquote>
+<h4 id="文档型数据库">文档型数据库</h4>
+<blockquote>
+<p>相关产品：CouchDB、MongoDB</p>
+<p>典型应用：Web应用（与Key-Value类似，Value是结构化的）</p>
+<p>数据模型： 一系列键值对</p>
+<p>优势：数据结构要求不严格</p>
+<p>劣势： 查询性能不高，而且缺乏统一的查询语法</p>
+</blockquote>
+<h4 id="图形graph数据库">图形(Graph)数据库</h4>
+<blockquote>
+<p>相关数据库：Neo4J、InfoGrid、Infinite Graph</p>
+<p>典型应用：社交网络</p>
+<p>数据模型：图结构</p>
+<p>优势：利用图结构相关算法。</p>
+<p>劣势：需要对整个图做计算才能得出结果，不容易做分布式的集群方案。</p>
+</blockquote>
+<h4 id="nosql特点">NoSQL特点</h4>
+<p>1.易扩展</p>
+<blockquote>
+<p>去掉关系特性,数据间无关系,在架构层面带来可扩展的能力</p>
+</blockquote>
+<p>2.大数据量下高性能</p>
+<blockquote>
+<p>无关系性,数据库的结构简单</p>
+</blockquote>
+<p>3.数据模型灵活</p>
+<blockquote>
+<p>无需事先为要存储的数据建立字段,存储自定义的数据格式</p>
+</blockquote>
+<p>4.高可用</p>
+<blockquote>
+<p>NoSQL在不太影响性能的情况，就可以方便的实现高可用的架构。比如Cassandra，HBase模型，通过复制模型也能实现高可用。</p>
+</blockquote>
+<h3 id="redis">Redis</h3>
+<p>Redis是用C语言开发的一个开源的高性能键值对（key-value）数据库。</p>
+<h4 id="支持类型">支持类型:</h4>
+<blockquote>
+<ol>
+<li>string 字符串类型</li>
+<li>hash 散列类型</li>
+<li>list 列表类型</li>
+<li>set 集合类型</li>
+<li>sorted set / zset 有序集合类型</li>
+</ol>
+</blockquote>
+<h4 id="应用场景">应用场景</h4>
+<blockquote>
+<ol>
+<li>
+<p>缓存（数据查询、短连接、新闻内容、商品内容等等）。（最多使用）</p>
+</li>
+<li>
+<p>聊天室的在线好友列表。</p>
+</li>
+<li>
+<p>任务队列。（秒杀、抢购、12306等等）</p>
+</li>
+<li>
+<p>应用排行榜。</p>
+</li>
+<li>
+<p>网站访问统计。</p>
+</li>
+<li>
+<p>数据过期处理（可以精确到毫秒）</p>
+</li>
+<li>
+<p>分布式集群架构中的session分离。</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="常用命令">常用命令</h4>
+<p>redis默认<strong>十六个</strong>数据库</p>
+<ol>
+<li>切换数据库 select 索引</li>
+<li>dbsize 查看key的个数</li>
+<li>flushdb 清空当前数据</li>
+<li>flushall 清空所有数据库 16个库全删(删的是数据)</li>
+</ol>
+<h5 id="通用语法">通用语法</h5>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>del key</td>
+<td>根据key删除</td>
+</tr>
+<tr>
+<td>keys *</td>
+<td>查看所有key</td>
+</tr>
+<tr>
+<td>type key</td>
+<td>查询key的类型,根据类型 就可以使用不同的api</td>
+</tr>
+<tr>
+<td>ttl key</td>
+<td>查看key的有效时间    1 永不超时.  -2 没有这个数据或者这个数据已经过时了.  正数: 还有多少秒过期</td>
+</tr>
+<tr>
+<td>expire key  s</td>
+<td>设置数据的过期时间 单位秒  例如：expire name 20  表示key为name的缓存20秒后过期  男</td>
+</tr>
+</tbody>
+</table>
+<h5 id="string类型">string类型</h5>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>set key</td>
+<td>存入</td>
+</tr>
+<tr>
+<td>get key</td>
+<td>取出</td>
+</tr>
+<tr>
+<td>del key</td>
+<td>移除</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>特点: key = value</p>
+</blockquote>
+<h5 id="hash类型">hash类型</h5>
+<p>hash是一个string类型的field和value的映射表。添加和删除操作都是O（1）（平均）的复杂度。hash类型特别适合用于存储对象。</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>hset</strong> key filed key</td>
+<td>存入一个字段一个值</td>
+</tr>
+<tr>
+<td><strong>hmset</strong> key field value field value</td>
+<td>存入多个字段多个值</td>
+</tr>
+<tr>
+<td>hget key filed</td>
+<td>取出</td>
+</tr>
+<tr>
+<td>hdel key filed</td>
+<td>删除</td>
+</tr>
+<tr>
+<td>hgetall key</td>
+<td>查看所有key语法</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>特点:</p>
+<p>key:{fieldname:fieldvalue,fieldname:fieldvalue}</p>
+<p>user: {username:zhangsan,gender:male,age:18}</p>
+</blockquote>
+<h5 id="list类型">list类型</h5>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>lpush</strong> key value value value</td>
+<td>左添加</td>
+</tr>
+<tr>
+<td><strong>rpush</strong> key value value value</td>
+<td>右添加</td>
+</tr>
+<tr>
+<td>lrange key startIndex  endIndex</td>
+<td>0 表示从左开始的第一个值 -1 表示从右开始的第一个值</td>
+</tr>
+<tr>
+<td>lpop  key</td>
+<td>左弹</td>
+</tr>
+<tr>
+<td>rpop  key</td>
+<td>右弹</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>特点：</p>
+<p>​	 key:[91，93，95]</p>
+</blockquote>
+<h5 id="set类型-天然幂等性">set类型 天然幂等性</h5>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sadd key value value value &hellip;</td>
+<td>存入</td>
+</tr>
+<tr>
+<td>smembers  key</td>
+<td>获取</td>
+</tr>
+<tr>
+<td>srem key  value value</td>
+<td>移除</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sorted-set--zset类型">sorted set / zset类型</h5>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zadd key  socre value  socre value  socre value</td>
+<td>存入</td>
+</tr>
+<tr>
+<td>zscore key member</td>
+<td>取出 获得指定成员的分数</td>
+</tr>
+<tr>
+<td>zrange key start(索引) end(索引)</td>
+<td>升序查询数据 [withscores]  []表示可有可无</td>
+</tr>
+<tr>
+<td>reverse</td>
+<td>反转</td>
+</tr>
+<tr>
+<td>zrevrange  key start  end  [withscores]</td>
+<td>降序查询数据</td>
+</tr>
+<tr>
+<td>zrem key member</td>
+<td>删除指定的成员</td>
+</tr>
+</tbody>
+</table>
+<h4 id="java连接redis">Java连接Redis</h4>
+<p>1.导入jedis</p>
+<ol start="2">
+<li></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>        <span style="color:#75715e">//1.创建jedis对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Jedis jedis <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Jedis<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">,</span>6379<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//2.调用api，存入redis
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        jedis<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;张三&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//3.调用api从redis获取
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        String username <span style="color:#f92672">=</span> jedis<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//4.释放资源
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		jedis<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span></code></pre></div><h5 id="jedispool">JedisPool</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>		<span style="color:#75715e">//1.创建jedis配置对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        JedisPoolConfig config <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JedisPoolConfig<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//2.设置参数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        config<span style="color:#f92672">.</span><span style="color:#a6e22e">setMinIdle</span><span style="color:#f92672">(</span>3<span style="color:#f92672">);</span><span style="color:#75715e">//最小空闲数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        config<span style="color:#f92672">.</span><span style="color:#a6e22e">setMaxWaitMillis</span><span style="color:#f92672">(</span>3000<span style="color:#f92672">);</span> <span style="color:#75715e">//最大等待时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        config<span style="color:#f92672">.</span><span style="color:#a6e22e">setMaxTotal</span><span style="color:#f92672">(</span>30<span style="color:#f92672">);</span><span style="color:#75715e">//最大连接数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//3.创建jedis连接池
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        JedisPool jedisPool <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JedisPool<span style="color:#f92672">(</span>config<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">,</span>6379<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//4.获取连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Jedis jedis <span style="color:#f92672">=</span> jedisPool<span style="color:#f92672">.</span><span style="color:#a6e22e">getResource</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//5.执行操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>jedis<span style="color:#f92672">.</span><span style="color:#a6e22e">keys</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//6.释放
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        jedis<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        jedisPool<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span></code></pre></div><h4 id="redis持久化">Redis持久化</h4>
+<ol>
+<li>RDB持久化（默认支持，无需配置）</li>
+</ol>
+<blockquote>
+<p>特定时间间隔把内种数据集快照写入磁盘</p>
+<blockquote>
+<p>优势:可以选择每个小时归档一次最近24小时的数据，同时还要每天归档一次最近30天的数据,一旦出现故障,可以非常容易恢复,相较AOF,RDB启动效率更高,只需要fork出子进程,让子进程完成持久化工作</p>
+</blockquote>
+<blockquote>
+<p>劣势: 如果最大限度避免数据丢失(高可用),在定时持久化之前系统宕机,没来得及写入的都会丢失</p>
+</blockquote>
+<blockquote>
+<p>配置文件 <code>save 900 1</code> #每900秒(15分钟)至少有1个key发生变化，则dump内存快照。</p>
+</blockquote>
+</blockquote>
+<ol start="2">
+<li>AOF持久化</li>
+</ol>
+<blockquote>
+<p>以日志的形式记录服务器所处理的每一个写操作,Redis服务器启东初读取日志重新构建数据库,以保证数据库数据完整</p>
+<blockquote>
+<p>redis有(每秒,每修改,不)三种同步策略,<strong>每秒同步</strong>是异步持久化效率高,<strong>每修改同步</strong>是同步持久化效率低</p>
+</blockquote>
+<blockquote>
+<p>对于相同数量的数据集而言，AOF文件通常要大于RDB文件</p>
+<p>AOF运行效率低于RDB,但每秒同步效率较高</p>
+</blockquote>
+<blockquote>
+<p>配置文件 <code>appendonly yes</code> no改为yes</p>
+<p><code>appendfsync always</code> 修改同步 <code>appendfsync everysec</code>每秒同步  <code>appendfsync no</code>不同步</p>
+</blockquote>
+<p><!-- raw HTML omitted -->注意<!-- raw HTML omitted -->:redis如果希望启动 日志机制 需要以配置文件方式启动redis 而不是双击打开exe程序。如果直接双击打开服务器 不会读取配置文件</p>
+</blockquote>
+<ol start="3">
+<li>无持久化</li>
+</ol>
+<blockquote>
+<p>可以通过配置的方式禁用Redis服务器的持久化功能，这样我们就可以将Redis视为一个功能加强版的memcached了。</p>
+</blockquote>
+<blockquote>
+<p>redis同时使用RDB和AOF</p>
+</blockquote>
+<h3 id="rbac">RBAC</h3>
+<p>RBAC  是基于角色的访问控制（Role-Based Access Control ）在 RBAC  中，权限与角色相关联，用户通过成为适当角色的成员而得到这些角色的权限。这就极大地简化了权限的管理。这样管理都是层级相互依赖的，权限赋予给角色，而把角色又赋予用户，这样的权限设计很清楚，管理起来很方便。</p>
+<p>经典权限五表</p>
+<p>用户表user&ndash;(多对多)&mdash;-角色表 role&mdash;(多对多)&ndash;权限表 permission</p>
+<p>用户角色中间表(用户和角色的主键作为外键)    角色权限中间表(角色和权限的主键作为外键)</p>
+<p>mysql 检查运行时间 先运行sql再运行此语句</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span><span style="color:#66d9ef">show</span> profiles
+</span></span></code></pre></div>
+
+</main>
+	
+<footer>
+	<p>&copy;2024 Jeff&#39;s Blog</p>
+</footer>
+
+</body>
+</html>
+

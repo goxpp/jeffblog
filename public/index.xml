@@ -6,7 +6,61 @@
     <description>Recent content in Home on Jeff&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 26 Sep 2023 18:21:43 +0800</lastBuildDate><atom:link href="https://goxpp.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Dec 2023 17:53:55 +0800</lastBuildDate><atom:link href="https://goxpp.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git常用命令的学习与理解</title>
+      <link>https://goxpp.github.io/posts/git-learn/</link>
+      <pubDate>Wed, 13 Dec 2023 17:53:55 +0800</pubDate>
+      
+      <guid>https://goxpp.github.io/posts/git-learn/</guid>
+      <description>初始化 git clone &amp;lt;repository name&amp;gt; #repository name为远端仓库，该操作会把远端仓库克隆到本地，并把执行该克隆命令的文件夹做为git 本地仓库。 git init #指定某个仓库做为git本地仓库，为初始化操作 git pull &amp;lt;repository name&amp;gt; #repository name为远端仓库 git pull &amp;lt;repository name&amp;gt; &amp;lt;branch name&amp;gt;#指定拉取该仓库某个分支的代码到本地 git init + git pull -b &amp;lt;branch name&amp;gt;&amp;lt;repository name&amp;gt; 在效果上等同于 git clone &amp;lt;repository name&amp;gt;。 但是在初始化的时候更推荐后者。因为后者可以默认与该仓库下所有分支都建立联系。前者只与git pull -b &amp;lt;branch name&amp;gt; &amp;lt; repository name&amp;gt;时 的branch name 建立联系。
+分支 🔀 git branch uat #新建一个uat分支，但是还在当前分支上，不会切换到uat分支 git branch -d &amp;lt;branch name&amp;gt;#删除本地分支 git push &amp;lt;remote_name&amp;gt; --delete &amp;lt;branch_name&amp;gt; #删除远端分支&amp;lt;remote_name&amp;gt;为远端仓库一般是origin &amp;lt;remote_name&amp;gt;为分支名字 git checkout uat #从当前分支将分支切换到uat分支 git checkout -b uat#新建一个uat分支，并切换到uat分支 git checkout &amp;lt;commit-id&amp;gt;#命令切换到某个特定的提交，这相当于创建一个临时分支。 git branch -u &amp;lt;remote-name&amp;gt;/&amp;lt;remote-branch&amp;gt; #sa本地分支与远程分支进行关联 如果在dev分支进行操作时，uat有bug需要checkout到uat，但是不想对dev的修改进行commit，可以用git stash 将修改放到git的隐藏栈中，Git 会创建一个临时的提交对象来保存这些更改，同时清空工作目录和暂存区，以便你可以在干净的状态下进行其他操作。</description>
+    </item>
+    
+    <item>
+      <title>My Sql Note</title>
+      <link>https://goxpp.github.io/posts/my-sql-note/</link>
+      <pubDate>Mon, 09 Oct 2023 14:55:11 +0800</pubDate>
+      
+      <guid>https://goxpp.github.io/posts/my-sql-note/</guid>
+      <description>数据库 什么是数据库 按照一定结构组织,管理和存储数据的仓库
+数据库的分类 层级数据库 网状型数据库(父节点不唯一) 关系型数据库(当前流行(大多数) ​	特点:由二维表格组成(有行有列)
+mysql数据库中一些组成关系 ​	MySQL,是一款关系型数据库的产品,安装mysql只是安装了mysql(数据库)的服务
+​	MySQL数据库管理系统&amp;ndash;&amp;gt;若干数据库&amp;ndash;&amp;gt;若干库中的表&amp;ndash;&amp;gt;若干表中的数据(尽量不要超过1亿条)
+SQL(结构化查询语言) 简介 ​	Structured Query Language(结构化查询语言),它是用于操作关系开数据库的一套语法,绝大多数关系 开数据库都支持.
+​	方言:各个数据库厂商针对结构化查询语言的扩展,每个数据库厂商方言,只能自己数据库用
+组成部分 ​	DDL:数据定义语言 Data Definition Language 建库建表,删除,修改数据库和表结构
+​	DML:(重要)数据操作语言Data Manipulation Language 操作数据:插入,更新,删除,它是数据的操作
+​	DQL:(最重要)数据查询语言Data Query Language 查询数据 (最难)
+​	DCL:数据控制语言Data Control Language 和数据库用户,以及用户角色相关(运维和DBA数据库管理员)
+​	CCL: 指针控制语言指针控制语言Cursor Control Language 在数据库中编写数据库代码时使用的,实际开发涉及很少(方言太多)
+​	TPL:事务处理语言Transaction Processing Language 和事务处理相关的(TCL Transaction Control Language事务控制语言)
+DDL 作用 用于创建,修改,删除数据库
+用于创建数据表,修改表结构,删除数据表
+分析 实际开发常用:创建数据库,创建数据表
+语法 连接数据库:mysql -u用户名 -p密码 创建库:create database[if not exists] 数据库名称; 名称不能是中文,数字可以是名称,但不能作为第一个字符</description>
+    </item>
+    
+    <item>
+      <title>删除目录下空文件夹与文件</title>
+      <link>https://goxpp.github.io/posts/deleteblankfile/</link>
+      <pubDate>Tue, 03 Oct 2023 18:08:42 +0800</pubDate>
+      
+      <guid>https://goxpp.github.io/posts/deleteblankfile/</guid>
+      <description>🎬场景：当服务器某一路径下存放文件后，想要删除该文件。但要保留原始配置文件路径。
+🎞️例：配置文件配置了\User\testDelete的路径，当程序将一个zip包解压到该路径下时，假设文件上层的文件夹名与层级未知，如\User\testDelete\zipFile\realFile\test.txt。这时就要用到递归调用。删除该目录的test.txt 文件。
+原始文件夹
+User └──testDelete └──test.txt 版本一 只删除文件夹内的文件，空文件夹不受影响
+//版本一，只删除文件，但空文件夹依然存在 public static void deleteDirectory(File folder){ for(File file : Objects.requireNonNull(folder.listFiles())){ if(file.isDirectory()){ //递归调用文件删除 deleteDirectory(file); }else{ file.delete(); } } } 执行⬇️代码后的目录
+deleteDirectory(new File(&amp;#34;/User/testDelete&amp;#34;)); User └──testDelete 已经达成目的了？不🙅🏻，其实这是因为文件目录仅有两层。
+当文件目录
+User └──testDelete └──realFile └──file └──test.txt 执行⬇️后
+deleteDirectory(new File(&amp;#34;/User/testDelete&amp;#34;)); 新的目录为
+User └──testDelete └──realFile └──file 版本二 删除该路径下所有文件与空文件夹，包括传参的文件夹
+public static void deleteDirectory(File folder){ for(File file : Objects.requireNonNull(folder.listFiles())){ if(file.isDirectory()){ //递归调用文件删除 deleteDirectory(file); }else{ file.delete(); } } folder.delete(); } 执行⬇️代码后的目录
+deleteDirectory(new File(&amp;#34;/User/testDelete&amp;#34;)); User 原始文件夹路径</description>
+    </item>
+    
     <item>
       <title>修改Mac终端的前缀</title>
       <link>https://goxpp.github.io/posts/modify-prefix-macterminal/</link>

@@ -1,7 +1,10 @@
 /* md.css */
 
 /* 样式化段落文本 */
-
+code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 /* 添加分隔线到 h1 标题 */
 h1 {
 	font-family: "Helvetica Neue", Arial, sans-serif;
@@ -139,4 +142,53 @@ pre code::before {
   /* 更多自定义样式 */
   /* 你可以根据需要添加更多的自定义样式，以改善 Markdown 渲染的外观 */
   
-  
+  /* 设置表格最大宽度为100% */
+table {
+  max-width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px; /* 可以根据需要调整表格与其他元素的间距 */
+}
+
+/* 设置表格单元格的边框样式和间距 */
+td, th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+/* 设置表头的背景色和文字颜色 */
+th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+/* 设置表格内文本对齐方式 */
+td {
+  text-align: left;
+}
+
+/* 设置表格的响应式设计，使其在小屏幕上水平滚动 */
+@media only screen and (max-width: 600px) {
+  table {
+      overflow-x: auto;
+      display: block;
+  }
+}
+
+/* 初始化样式，使 header 在页面加载时显示 */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* 向上滚动时隐藏 header */
+header.hidden {
+  transform: translateY(-100%);
+}
+
+/* 向下滚动时显示 header */
+header:not(.hidden) {
+  transform: translateY(0);
+}

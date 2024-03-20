@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head >
+<head>
+	<meta name="generator" content="Hugo 0.118.2">
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,6 +22,37 @@
              
         }
     </style>
+	
+	<script>
+		
+		$(document).ready(function () {
+			
+			var header = $('header');
+			
+			
+			var lastScrollTop = 0;
+	
+			
+			$(window).scroll(function () {
+				
+				var st = $(this).scrollTop();
+				
+				
+				if (st > lastScrollTop) {
+					
+					header.addClass('hidden');
+				} else {
+					
+					header.removeClass('hidden');
+				}
+	
+				
+				lastScrollTop = st;
+			});
+		});
+	</script>
+	
+
 
 </head>
 
@@ -55,7 +88,7 @@
 </main>
 	
 <footer>
-	<p>&copy;2023 Jeff&#39;s Blog</p>
+	<p>&copy;2024 Jeff&#39;s Blog</p>
 </footer>
 
 </body>

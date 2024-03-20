@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>删除目录下空文件夹与文件 | Jeff&#39;s Blog</title>
+
+	<link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+
+	<style>
+         
+		header {
+            position: fixed;
+            top: 0;
+            width: 100%;  
+            background-color: #fff;  
+             
+        }
+    </style>
+	
+	<script>
+		
+		$(document).ready(function () {
+			
+			var header = $('header');
+			
+			
+			var lastScrollTop = 0;
+	
+			
+			$(window).scroll(function () {
+				
+				var st = $(this).scrollTop();
+				
+				
+				if (st > lastScrollTop) {
+					
+					header.addClass('hidden');
+				} else {
+					
+					header.removeClass('hidden');
+				}
+	
+				
+				lastScrollTop = st;
+			});
+		});
+	</script>
+	
+
+
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a class="logo" href="https://goxpp.github.io">
+      Jeff&#39;s Blog
+    </a>
+    <ul class="main-menu">
+      
+      <li>
+        <a href="/posts">Posts</a>
+      </li>
+      
+      <li>
+        <a href="/about">About</a>
+      </li>
+      
+    </ul>
+  </nav>
+</header>
+
+
+<main class="content">
+
+<link rel="stylesheet" href="/css/md.css" type="text/css" media="all" />
+
+
+<h1>删除目录下空文件夹与文件</h1>
+
+
+<p>🎬场景：当服务器某一路径下存放文件后，想要删除<strong>该文件</strong>。但要<strong>保留原始配置文件路径</strong>。</p>
+<p>🎞️例：配置文件配置了<code>\User\testDelete</code>的路径，当程序将一个zip包解压到该路径下时，假设文件上层的文件夹名与层级未知，如<code>\User\testDelete\zipFile\realFile\test.txt</code>。这时就要用到递归调用。删除该目录的test.txt 文件。</p>
+<p>原始文件夹</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>User
+</span></span><span style="display:flex;"><span>└──testDelete
+</span></span><span style="display:flex;"><span>		└──test.txt
+</span></span></code></pre></div><h2 id="版本一">版本一</h2>
+<p>只删除文件夹内的文件，空文件夹不受影响</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">//版本一，只删除文件，但空文件夹依然存在
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteDirectory</span><span style="color:#f92672">(</span>File folder<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>File file <span style="color:#f92672">:</span> Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>folder<span style="color:#f92672">.</span><span style="color:#a6e22e">listFiles</span><span style="color:#f92672">())){</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>file<span style="color:#f92672">.</span><span style="color:#a6e22e">isDirectory</span><span style="color:#f92672">()){</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//递归调用文件删除
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                deleteDirectory<span style="color:#f92672">(</span>file<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                file<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>执行⬇️代码后的目录</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>deleteDirectory<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/User/testDelete&#34;</span><span style="color:#f92672">));</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>User
+</span></span><span style="display:flex;"><span>└──testDelete
+</span></span></code></pre></div><p>已经达成目的了？不🙅🏻，其实这是因为文件目录仅有两层。</p>
+<p>当文件目录</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>User
+</span></span><span style="display:flex;"><span>└──testDelete
+</span></span><span style="display:flex;"><span>		└──realFile
+</span></span><span style="display:flex;"><span>				└──file
+</span></span><span style="display:flex;"><span>						└──test.txt
+</span></span></code></pre></div><p>执行⬇️后</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>deleteDirectory<span style="color:#f92672">(</span>new File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/User/testDelete&#34;</span><span style="color:#f92672">))</span>;
+</span></span></code></pre></div><p>新的目录为</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>User
+</span></span><span style="display:flex;"><span>└──testDelete
+</span></span><span style="display:flex;"><span>		└──realFile
+</span></span><span style="display:flex;"><span>				└──file
+</span></span></code></pre></div><h2 id="版本二">版本二</h2>
+<p>删除该路径下所有文件与空文件夹，包括传参的文件夹</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteDirectory</span><span style="color:#f92672">(</span>File folder<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>File file <span style="color:#f92672">:</span> Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>folder<span style="color:#f92672">.</span><span style="color:#a6e22e">listFiles</span><span style="color:#f92672">())){</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>file<span style="color:#f92672">.</span><span style="color:#a6e22e">isDirectory</span><span style="color:#f92672">()){</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//递归调用文件删除
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                deleteDirectory<span style="color:#f92672">(</span>file<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                file<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        folder<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>执行⬇️代码后的目录</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>deleteDirectory<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/User/testDelete&#34;</span><span style="color:#f92672">));</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>User
+</span></span></code></pre></div><p>原始文件夹路径</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>User
+</span></span><span style="display:flex;"><span>└──testDelete
+</span></span><span style="display:flex;"><span>		└──test.txt
+</span></span></code></pre></div><h2 id="版本三">版本三</h2>
+<p>只删除传参文件夹下的所有空文件与空文件夹，与版本二不同的是保留<code>User/testDelete</code>的文件夹目录</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">//在递归调用时判断当前file的absoulutePath是否是baseUrl，是则保留该文件夹
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteDirectory</span><span style="color:#f92672">(</span>File folder<span style="color:#f92672">,</span>String baseUrl<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>File file <span style="color:#f92672">:</span> Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>folder<span style="color:#f92672">.</span><span style="color:#a6e22e">listFiles</span><span style="color:#f92672">())){</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>file<span style="color:#f92672">.</span><span style="color:#a6e22e">isDirectory</span><span style="color:#f92672">()){</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//递归调用文件删除
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                deleteDirectory<span style="color:#f92672">(</span>file<span style="color:#f92672">,</span>baseUrl<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                file<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>folder<span style="color:#f92672">.</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>baseUrl<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            folder<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>执行⬇️代码后的目录</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>deleteDirectory<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/User/testDelete&#34;</span><span style="color:#f92672">),</span><span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/User/testDelete&#34;</span><span style="color:#f92672">));</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>User
+</span></span><span style="display:flex;"><span>└──testDelete
+</span></span></code></pre></div><p>🥳</p>
+
+
+</main>
+	
+<footer>
+	<p>&copy;2024 Jeff&#39;s Blog</p>
+</footer>
+
+</body>
+</html>
+

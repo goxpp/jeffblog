@@ -1,5 +1,5 @@
 ---
-title: "My Sql Note"
+title: "MySQL Note"
 date: 2023-10-09T14:55:11+08:00
 type: "posts"
 ---
